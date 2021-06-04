@@ -1,0 +1,28 @@
+nav{
+    font-family: "Pacifico", cursive;
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 10vh;
+    background: rgb(147, 149, 151);
+}
+    
+    .nav-links{
+      width:50%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      list-style: none;
+      color: black;
+      
+    }
+
+    :visited{
+        color:rgb(45, 45, 73);
+        
+    }
+
+    :link{
+        color: black;
+        text-decoration: none;
+    }

@@ -1,0 +1,41 @@
+.login-register-container{
+    width: 400px;
+    height: auto;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.login-register-form{
+    border: 1px solid #f6f8fa;
+    border-radius: 5px;
+    padding: 25px;
+    margin-bottom: 5px;
+    background-color: #f2f2f7;
+}
+
+.login-register-input{
+    display: inline-block;
+    padding: 25px;
+}
+
+.login-register-header{
+    font-family: 'Merriweather', serif;
+}
+
+.login-btn{
+    display: inline-block;
+    border-radius: 10px;
+    background-color: rgb(90, 90, 153);
+    margin-top: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 1.2rem;
+    font-family: 'Merriweather', serif;
+    padding: 10px;
+    width: 40%;
+    transition: all 0.5s;
+    cursor: pointer;
+}
