@@ -2,8 +2,8 @@ import './Nav.css';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import Login from '../Auth/Login';
 import Home from './Home';
-import Connect from '../Music/Connect';
-
+//import Connect from '../Music/Connect';
+import A from '../Music/A';
 
 function Nav() {
   return(
@@ -29,7 +29,7 @@ function Nav() {
     
     <Route path="/" component={Home} exact />
     <Route path="/login" component={Login} exact />
-    <Route path="/connect" component={Connect} exact />
+    <Route path="/connect" component={A} exact />
     
     </Router>
     </div>

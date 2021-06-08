@@ -5,10 +5,10 @@ import Axios from "axios";
 
 
 const Register = (props) => {
-
   const [emailReg, setEmailReg] = useState("");
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
+  const [error, setError] = useState("");
 
   const register = () => {
     Axios.post("http://localhost:3001/login/register", {

@@ -8,17 +8,17 @@ export default function useAuth(code) {
 
   useEffect(() => {
     axios
-      .post("http://localhost:3001/login", {
+      .post("http://localhost:3001/connect", {
         code,
       })
       .then(res => {
         setAccessToken(res.data.accessToken)
         setRefreshToken(res.data.refreshToken)
         setExpiresIn(res.data.expiresIn)
-        window.history.pushState({}, null, "/")
+        window.history.pushState({}, null, "/connect")
       })
       .catch(() => {
-        window.location = "/"
+        window.location = "/connect"
       })
   }, [code])
 
@@ -26,7 +26,7 @@ export default function useAuth(code) {
     if (!refreshToken || !expiresIn) return
     const interval = setInterval(() => {
       axios
-        .post("http://localhost:3001/refresh", {
+        .post("http://localhost:3001/connect/refresh", {
           refreshToken,
         })
         .then(res => {
@@ -34,7 +34,7 @@ export default function useAuth(code) {
           setExpiresIn(res.data.expiresIn)
         })
         .catch(() => {
-          window.location = "/"
+          window.location = "/connect"
         })
     }, (expiresIn - 60) * 1000)
 

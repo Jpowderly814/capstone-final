@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"
 import useAuth from "./useAuth"
 import Player from "./Player"
-import TrackSearchResult from "./TrackSearchResult"
+//import TrackSearchResult from "./TrackSearchResult"
 import PlaylistSearchResult from "./PlaylistSearchResult";
 import { Container, Form } from "react-bootstrap"
 import SpotifyWebApi from "spotify-web-api-node"
-import axios from "axios"
+//import axios from "axios"
+import TrackList from "./TrackList";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: "8b945ef10ea24755b83ac50cede405a0",
@@ -15,29 +16,64 @@ export default function Dashboard({ code }) {
   const accessToken = useAuth(code)
   const [search, setSearch] = useState("")
   const [searchResults, setSearchResults] = useState([])
-  const [playingTrack, setPlayingTrack] = useState()
-  const [lyrics, setLyrics] = useState("")
+  const [playingPlaylist, setPlayingPlaylist] = useState()
+  const [tracks, setTracks] = useState("")
+  const [playlistTracks, setPlaylistTracks] = useState([]);
 
-  function chooseTrack(playlist) {
-    setPlayingTrack(playlist)
-    setSearch("")
-    setLyrics("")
-  }
+  
+  function choosePlaylist(playlist) {
+    const playlistCode=playlist.uri.substring(17);
+    spotifyApi.getPlaylistTracks(playlistCode)
+      .then(res => {
+        console.log(res.body);
+        setPlaylistTracks(res.body.items.map(track => {
+          return {
+            title: track.track.name
+          }
+        }));
+
+        //console.log(res.body.items["track"].track.name);
+      });
+        //artist: track.artists[0].name,
+        
+    setPlayingPlaylist(playlist);
+    setSearch("");
+    setTracks("");
+    }
 
   useEffect(() => {
-    if (!playingTrack) return
+    if (!search) return setSearchResults([]);
+    if (!accessToken) return;
 
-    axios
-      .get("http://localhost:3001/lyrics", {
-        params: {
-          track: playingTrack.title,
-          artist: playingTrack.artist,
-        },
-      })
-      .then(res => {
-        setLyrics(res.data.lyrics)
-      })
-  }, [playingTrack])
+    let cancel = false;
+    spotifyApi.searchPlaylists(search + " bpm").then(res => {
+      //console.log(res.body);
+      if (cancel) return
+      setSearchResults(
+        
+        res.body["playlists"].items.map(playlist => {
+          const smallestAlbumImage = playlist.images.reduce(
+            (smallest, image) => {
+              if (image.height < smallest.height) return image
+              return smallest
+            },
+            playlist.images[0]
+          )
+
+          return {
+            //artist: track.artists[0].name,
+            title: playlist.name,
+            uri: playlist.uri,
+            albumUrl: smallestAlbumImage.url,
+          }
+        })
+      )
+    })
+
+    return () => (cancel = true)
+  }, [search, accessToken])
+  
+
 
   useEffect(() => {
     if (!accessToken) return
@@ -45,13 +81,11 @@ export default function Dashboard({ code }) {
   }, [accessToken])
 
   useEffect(() => {
-    if (!search) return setSearchResults([])
-    if (!accessToken) return
+    if (!search) return setSearchResults([]);
+    if (!accessToken) return;
 
-    let cancel = false
+    let cancel = false;
     spotifyApi.searchPlaylists(search + " bpm").then(res => {
-
-      console.log(res.body["playlists"].items);
       
       if (cancel) return
       setSearchResults(
@@ -77,33 +111,6 @@ export default function Dashboard({ code }) {
     return () => (cancel = true)
   }, [search, accessToken])
 
-  /*return (
-    <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
-      <Form.Control
-        type="search"
-        placeholder="Search Songs/Artists"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
-      <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
-        {searchResults.map(track => (
-          <TrackSearchResult
-            track={track}
-            key={track.uri}
-            chooseTrack={chooseTrack}
-          />
-        ))}
-        {searchResults.length === 0 && (
-          <div className="text-center" style={{ whiteSpace: "pre" }}>
-            {lyrics}
-          </div>
-        )}
-      </div>
-      <div>
-        <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
-      </div>
-    </Container>
-  )*/
 
   return (
 
@@ -120,17 +127,18 @@ export default function Dashboard({ code }) {
           <PlaylistSearchResult
             playlist={playlist}
             key={playlist.uri}
-            chooseTrack={chooseTrack}
+            choosePlaylist={choosePlaylist}
           />
         ))}
         {searchResults.length === 0 && (
           <div className="text-center" style={{ whiteSpace: "pre" }}>
-            {lyrics}
+            <div> {playingPlaylist && <button>Save Playlist</button>}</div>
+            <div>{playingPlaylist && <TrackList trackList={playlistTracks}  />}</div>
           </div>
           )}
       </div>
       <div>
-        <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+        <Player accessToken={accessToken} trackUri={playingPlaylist?.uri} />
       </div>
       </Container>
 
