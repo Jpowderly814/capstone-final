@@ -7,6 +7,7 @@ import { Container, Form } from "react-bootstrap"
 import SpotifyWebApi from "spotify-web-api-node"
 //import axios from "axios"
 import TrackList from "./TrackList";
+import axios from "axios";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: "8b945ef10ea24755b83ac50cede405a0",
@@ -47,7 +48,7 @@ export default function Dashboard({ code }) {
 
     let cancel = false;
     spotifyApi.searchPlaylists(search + " bpm").then(res => {
-      //console.log(res.body);
+      console.log(res.body);
       if (cancel) return
       setSearchResults(
         
@@ -112,6 +113,24 @@ export default function Dashboard({ code }) {
   }, [search, accessToken])
 
 
+  //const [name, setName] = useState("");
+  //const [user, setUser] = useState("");
+
+  const savePlaylist = () => {
+    console.log(playingPlaylist);
+      axios.post("http://localhost:3001/save", {
+        id: playingPlaylist.uri.substring(17),
+        name: playingPlaylist.title,
+        user: 'Julie'
+      }).then((response) => {
+        console.log("Success!");  
+        });
+      
+      //setUser("");
+      //setName("");
+  };
+
+
   return (
 
     <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
@@ -132,7 +151,7 @@ export default function Dashboard({ code }) {
         ))}
         {searchResults.length === 0 && (
           <div className="text-center" style={{ whiteSpace: "pre" }}>
-            <div> {playingPlaylist && <button>Save Playlist</button>}</div>
+            <div> {playingPlaylist && <button onClick={savePlaylist}>Save Playlist</button>}</div>
             <div>{playingPlaylist && <TrackList trackList={playlistTracks}  />}</div>
           </div>
           )}

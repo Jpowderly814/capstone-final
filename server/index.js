@@ -166,4 +166,24 @@ app.post("/connect", (req, res) => {
 })*/
 
 
+app.post("/save", (req, res) => {
+  const id = req.body.id;
+  const name = req.body.name;
+  const user = req.body.user;
+  
+
+  db.query(
+      "INSERT INTO favorites (id, name, user) VALUES (?,?,?)", 
+      [id, name, user], 
+      (err, result) => {
+          if (err) {
+              console.log(err);
+          } else{
+              res.send("Values inserted");
+          }
+
+      }
+  );
+});
+
 

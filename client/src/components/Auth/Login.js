@@ -40,14 +40,18 @@ function Login() {
       }else{
         setLoginStatus(response.data[0].username);
         setLoggedIn(true);
+        
       }
 
     });
+    setUsername("");
+    setPassword("");
   };
 
   const logout = () => {
-    setLoginStatus(false); 
+    setLoggedIn(false); 
     localStorage.setItem("token", "null");
+
   }
 
   useEffect (() => {
@@ -76,7 +80,7 @@ function Login() {
             <div className="col-sm-9">
               <input
                 type="text"
-                placeholder="Username..."
+                value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
@@ -89,7 +93,7 @@ function Login() {
             <div className="col-sm-9">
               <input
                 type="password"
-                placeholder="Password..."
+                value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }} 
@@ -97,14 +101,14 @@ function Login() {
             </div>   
         </div>
 
-        {(loggedIn === true) && <button className="login-btn" onClick={logout}>LogOut</button> }
-        <button className="login-btn" onClick={login}> Login </button>
+        {(loggedIn === true) && <button className="login-btn" onClick={logout}>logout</button> }
+        {(loggedIn === false) && <button className="login-btn" onClick={login}>login</button>}
     
       </div>
 
       <div >
       
-            {!isRegistering && <button className="login-btn" onClick={startRegistrationHandler}>Register</button>}
+            {!isRegistering && <button className="login-btn" onClick={startRegistrationHandler}>register</button>}
             
             {isRegistering && <Register onCancel={stopRegistrationHandler}/>}
             
