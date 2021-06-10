@@ -2,9 +2,12 @@ import './Login.css';
 import Register from './Register';
 import { useState, useEffect } from "react";
 import Axios from "axios";
+import ErrorModal from "../UI/ErrorModal";
 //import { Link, Route } from 'react-router-dom';
 
 function Login() {
+
+  const [error, setError] = useState("");
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -32,11 +35,17 @@ function Login() {
   }
 
   const login = () => {
+
     Axios.post("http://localhost:3001/login", {
       username: username, password: password
     }).then((response) => {
       if(response.data.message){
-        setLoginStatus(response.data.message);
+        //setLoginStatus(response.data.message);
+        setError({
+          title: 'Invalid',
+          message: response.data.message
+        });
+        return;
       }else{
         setLoginStatus(response.data[0].username);
         setLoggedIn(true);
@@ -44,6 +53,7 @@ function Login() {
       }
 
     });
+
     setUsername("");
     setPassword("");
   };
@@ -64,11 +74,16 @@ function Login() {
     }); 
   }, []);
 
+  const errorHandler = () => {
+    setError(null);
+  };
+
 
 
   return (
 
     <div className="login-register-container">
+      {error && (<ErrorModal title={error.title} message={error.message} onConfirm={errorHandler}/>)}
         <div className="text-center">
             <h2 className="login-register-header">Sign in</h2>
         </div>

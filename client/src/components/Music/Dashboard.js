@@ -112,10 +112,7 @@ export default function Dashboard({ code }) {
     return () => (cancel = true)
   }, [search, accessToken])
 
-
-  //const [name, setName] = useState("");
-  //const [user, setUser] = useState("");
-
+  
   const savePlaylist = () => {
     console.log(playingPlaylist);
       axios.post("http://localhost:3001/save", {
@@ -125,9 +122,7 @@ export default function Dashboard({ code }) {
       }).then((response) => {
         console.log("Success!");  
         });
-      
-      //setUser("");
-      //setName("");
+
   };
 
 
