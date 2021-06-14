@@ -28,8 +28,18 @@ export default function Dashboard({ code }) {
       .then(res => {
         console.log(res.body);
         setPlaylistTracks(res.body.items.map(track => {
+
+          const smallestAlbumImage = track.track.album.images.reduce(
+            (smallest, image) => {
+              if (image.height < smallest.height) return image
+              return smallest
+            },
+            //track.images[0]
+          )
+
           return {
-            title: track.track.name
+            title: track.track.name,
+            albumUrl: smallestAlbumImage.url,
           }
         }));
 
@@ -114,11 +124,14 @@ export default function Dashboard({ code }) {
 
   
   const savePlaylist = () => {
+    console.log(localStorage.getItem("user"));
+    
+    
     console.log(playingPlaylist);
       axios.post("http://localhost:3001/save", {
-        id: playingPlaylist.uri.substring(17),
+        playlist: playingPlaylist.uri.substring(17),
         name: playingPlaylist.title,
-        user: 'Julie'
+        user: localStorage.getItem("user")
       }).then((response) => {
         console.log("Success!");  
         });

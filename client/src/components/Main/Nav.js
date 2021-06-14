@@ -2,6 +2,7 @@ import './Nav.css';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import Login from '../Auth/Login';
 import Home from './Home';
+import Profile from '../Auth/Profile';
 //import Connect from '../Music/Connect';
 import A from '../Music/A';
 
@@ -16,7 +17,10 @@ function Nav() {
                 
                 <ul className ="nav-links">
                     <Link to='/login'>
-                        login
+                        login/logout
+                    </Link>
+                    <Link to='/profile'> 
+                        profile
                     </Link>
                     <Link to='/connect'>
                         music
@@ -28,7 +32,8 @@ function Nav() {
    
     
     <Route path="/" component={Home} exact />
-    <Route path="/login" component={Login} exact />
+    <Route path="/profile" component={Profile} />
+    <Route path="/login" component={Login} exact/>
     <Route path="/connect" component={A} exact />
     
     </Router>

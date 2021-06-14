@@ -14,12 +14,19 @@ const TrackList = (trackList) => {
         </div>
         <ul>
             {trackList.trackList.map(name => {
-                return <li>{name.title}</li>
+                return (
+                <div>
+                  
+                
+                <li><img src={name.albumUrl} style={{ height: "64px", width: "64px" }} />  {name.title}</li>
+                </div>
+                )
             })}
         </ul>
         </div>
 
 
+            
     );
 
 }

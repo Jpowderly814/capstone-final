@@ -13,6 +13,8 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+const jwt = require("jsonwebtoken");
+
 const app = express();
 
 app.use(express.json());
@@ -67,6 +69,32 @@ app.post('/login/register', (req, res) => {
     });  
 });
 
+
+
+const verifyJWT = (req, res, next) => {
+    const token = req.headers["x-access-token"];
+
+    if(!token) {
+        res.send("Need a token");
+    }else{
+        jwt.verify(token, "jwtSecret", (err, decoded) => {
+            if (err) {
+                res.json({auth: false, message: "Failed to authenticate"});
+            }else{
+                req.userId = decoded.id;
+                next();
+            }
+        });
+    }
+};
+
+app.get("/isUserAuth", verifyJWT, (req, res) => {
+    console.log(res);
+    res.send("You are authenticated");
+});
+
+
+
 app.get("/login", (req, res) => {
     if (req.session.user) {
         res.send({loggedIn: true, user: req.session.user});
@@ -93,14 +121,22 @@ app.post("/login", (req,res) => {
                     if(response) {
                         req.session.user = result; //sets session
                         console.log(req.session.user);
-                        res.send(result); //sends back user that is logged in
+                        //res.send(result); //sends back user that is logged in
+                    
+                        const id = result[0].id;
+                        const token = jwt.sign({id}, "jwtSecret", {  
+                            expiresIn: 300,
+                        });
+                        res.json({auth: true, token: token, result: result});
                     }else{
                         console.log(error);
-                        res.send({message: "Wrong username/password combination!"});
+                        res.json({auth: false, message: "Wrong username/password combination"});
+                        //res.send({message: "Wrong username/password combination!"});
                     }
                 });
             }else{
-                res.send({message: "User doesn't exist."});
+                //res.send({message: "User doesn't exist."});
+                res.json({auth: false, message: "no user exists"});
             }
     }
     );
@@ -167,14 +203,14 @@ app.post("/connect", (req, res) => {
 
 
 app.post("/save", (req, res) => {
-  const id = req.body.id;
+  const playlist = req.body.playlist;
   const name = req.body.name;
   const user = req.body.user;
   
 
   db.query(
-      "INSERT INTO favorites (id, name, user) VALUES (?,?,?)", 
-      [id, name, user], 
+      "INSERT INTO favorites (playlist, name, user) VALUES (?,?,?)", 
+      [playlist, name, user], 
       (err, result) => {
           if (err) {
               console.log(err);

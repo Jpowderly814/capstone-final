@@ -12,18 +12,12 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const[loggedIn, setLoggedIn] = useState(false);
-  const[loginStatus, setLoginStatus] = useState("null");
+  const[loggedIn, setLoggedIn] = useState(localStorage.getItem("token")!=="null");
+  //const[loginStatus, setLoginStatus] = useState();
 
   const [isRegistering, setIsRegistering] = useState(false);
 
-    /*const saveRegistrationDataHandler = (enteredExpenseData) => {
-        const expenseData = {
-            ...enteredExpenseData,
-            id: Math.random().toString()
-        };
-        //props.onAddExpense(expenseData); //lifting state up
-    };*/
+  Axios.defaults.withCredentials = true;
 
   const startRegistrationHandler = () => {
       setIsRegistering(true);
@@ -31,15 +25,16 @@ function Login() {
 
   const stopRegistrationHandler = () => {
       setIsRegistering(false);
-
   }
 
   const login = () => {
 
     Axios.post("http://localhost:3001/login", {
-      username: username, password: password
+      username: username, 
+      password: password
     }).then((response) => {
       if(response.data.message){
+        setLoggedIn(false);
         //setLoginStatus(response.data.message);
         setError({
           title: 'Invalid',
@@ -47,38 +42,35 @@ function Login() {
         });
         return;
       }else{
-        setLoginStatus(response.data[0].username);
-        setLoggedIn(true);
+        console.log(response.data.result[0]);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", response.data.result[0].id);
+        console.log(localStorage.getItem("user"));
         
+        //setLoginStatus(response.data[0].RowDataPacket.username);
+        setLoggedIn(true);
       }
 
     });
 
     setUsername("");
     setPassword("");
+    
   };
 
   const logout = () => {
+    //Axios.post("http://localhost:3001/logout");
     setLoggedIn(false); 
     localStorage.setItem("token", "null");
 
-  }
+    setUsername("");
+    setPassword("");
 
-  useEffect (() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
-      
-      if (response.data.loggedIn === true){
-        
-      setLoginStatus(response.data.user[0].username);
-      }
-    }); 
-  }, []);
+  }
 
   const errorHandler = () => {
     setError(null);
-  };
-
-
+};
 
   return (
 
@@ -115,12 +107,10 @@ function Login() {
               />
             </div>   
         </div>
-
-        {(loggedIn === true) && <button className="login-btn" onClick={logout}>logout</button> }
-        {(loggedIn === false) && <button className="login-btn" onClick={login}>login</button>}
+        {(localStorage.getItem("token") !== "null") && <button className="login-btn" onClick={logout}>logout</button> }
+        {(localStorage.getItem("token") === "null" ) && <button className="login-btn" onClick={login}>login</button>}
     
       </div>
-
       <div >
       
             {!isRegistering && <button className="login-btn" onClick={startRegistrationHandler}>register</button>}
