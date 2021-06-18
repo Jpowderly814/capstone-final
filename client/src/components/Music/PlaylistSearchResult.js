@@ -26,7 +26,7 @@ return (
         style={{ cursor: "pointer" }}
         onClick={handlePlay}
     >
-        <img src={playlist.albumUrl} style={{ height: "64px", width: "64px" }} />
+        <img src={playlist.albumUrl} alt="" style={{ height: "64px", width: "64px" }} />
       <div className="ml-3">
         <div>{playlist.title}</div>
         

@@ -17,7 +17,7 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
-app.use(express.json());
+
 
 app.use(
     cors({
@@ -41,6 +41,8 @@ app.use(
         },
     })
 );
+
+
 const db = mysql.createConnection({
     user: "root",
     host: "localhost",
@@ -68,7 +70,6 @@ app.post('/login/register', (req, res) => {
         );
     });  
 });
-
 
 
 const verifyJWT = (req, res, next) => {
@@ -145,8 +146,6 @@ app.listen(3001, ()=> {
     console.log("Yay,your server is running on port 3001!");
 });
 
-
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -195,19 +194,12 @@ app.post("/connect", (req, res) => {
     })
 })
 
-/*app.get("/lyrics", async (req, res) => {
-  const lyrics =
-    (await lyricsFinder(req.query.artist, req.query.track)) || "No Lyrics Found"
-  res.json({ lyrics })
-})*/
-
 
 app.post("/save", (req, res) => {
   const playlist = req.body.playlist;
   const name = req.body.name;
   const user = req.body.user;
   
-
   db.query(
       "INSERT INTO favorites (playlist, name, user) VALUES (?,?,?)", 
       [playlist, name, user], 
@@ -215,11 +207,23 @@ app.post("/save", (req, res) => {
           if (err) {
               console.log(err);
           } else{
-              res.send("Values inserted");
+              result.send("Values inserted");
           }
 
       }
   );
 });
 
+
+app.get("/favorites/:id", (req, res) => {
+    const user = req.params.id;
+    db.query("SELECT * FROM favorites WHERE user = ?", user, (err, result) => {
+        if (err){ 
+            console.log(err);
+        }
+        else{
+            res.send(result);
+        }
+    })
+})
 

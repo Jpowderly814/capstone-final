@@ -7,6 +7,8 @@ import { Container, Form } from "react-bootstrap"
 import SpotifyWebApi from "spotify-web-api-node"
 //import axios from "axios"
 import TrackList from "./TrackList";
+import RatePlaylist from "./RatePlaylist";
+import Button from "../UI/Button";
 import axios from "axios";
 
 const spotifyApi = new SpotifyWebApi({
@@ -40,6 +42,8 @@ export default function Dashboard({ code }) {
           return {
             title: track.track.name,
             albumUrl: smallestAlbumImage.url,
+            id: track.track.id,
+            uri: track.track.uri
           }
         }));
 
@@ -50,7 +54,7 @@ export default function Dashboard({ code }) {
     setPlayingPlaylist(playlist);
     setSearch("");
     setTracks("");
-    }
+  }
 
   useEffect(() => {
     if (!search) return setSearchResults([]);
@@ -76,6 +80,7 @@ export default function Dashboard({ code }) {
             title: playlist.name,
             uri: playlist.uri,
             albumUrl: smallestAlbumImage.url,
+            
           }
         })
       )
@@ -144,12 +149,22 @@ export default function Dashboard({ code }) {
     <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
       <Form.Control
         type="search"
-        placeholder="Search Songs/Artists"
+        placeholder="Search Playlists"
         value={search} 
         onChange={e => setSearch(e.target.value)}
+
       />
 
-<div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
+<label for="cars">Choose a car:</label>
+<select id="cars" name="cars">
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="fiat">Fiat</option>
+  <option value="audi">Audi</option>
+</select>
+      
+
+      <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
         {searchResults.map(playlist => (
           <PlaylistSearchResult
             playlist={playlist}
@@ -159,15 +174,16 @@ export default function Dashboard({ code }) {
         ))}
         {searchResults.length === 0 && (
           <div className="text-center" style={{ whiteSpace: "pre" }}>
-            <div> {playingPlaylist && <button onClick={savePlaylist}>Save Playlist</button>}</div>
+            <div> {playingPlaylist && <Button onClick={savePlaylist}>Save Playlist</Button>}</div>
+            <div> {playingPlaylist && <RatePlaylist/>} </div>
             <div>{playingPlaylist && <TrackList trackList={playlistTracks}  />}</div>
           </div>
           )}
       </div>
       <div>
-        <Player accessToken={accessToken} trackUri={playingPlaylist?.uri} />
+        <Player accessToken={accessToken} trackUri={playingPlaylist?.uri} trackList={playlistTracks}/>
       </div>
-      </Container>
+    </Container>
 
   )
 }

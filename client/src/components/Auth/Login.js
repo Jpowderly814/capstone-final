@@ -1,6 +1,6 @@
 import './Login.css';
 import Register from './Register';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Axios from "axios";
 import ErrorModal from "../UI/ErrorModal";
 //import { Link, Route } from 'react-router-dom';
@@ -12,7 +12,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const[loggedIn, setLoggedIn] = useState(localStorage.getItem("token")!=="null");
+  const[loggedIn, setLoggedIn] = useState(localStorage.getItem("token")!==null);
   //const[loginStatus, setLoginStatus] = useState();
 
   const [isRegistering, setIsRegistering] = useState(false);
@@ -75,16 +75,19 @@ function Login() {
   return (
 
     <div className="login-register-container">
+      {console.log(loggedIn)}
+      {console.log(localStorage.getItem("token"))}
       {error && (<ErrorModal title={error.title} message={error.message} onConfirm={errorHandler}/>)}
         <div className="text-center">
             <h2 className="login-register-header">Sign in</h2>
         </div>
     
       <div className="login-register-form">
-
+      {(localStorage.getItem("token") === "null" ) && 
         <div className="form-group row">
           <label className="col-sm-3 col-form-label" >Username</label>
             <div className="col-sm-9">
+            
               <input
                 type="text"
                 value={username}
@@ -93,8 +96,8 @@ function Login() {
                 }}
               />
             </div>
-        </div> 
-
+        </div> }
+        {(localStorage.getItem("token") === "null" ) && 
         <div className="form-group row">
           <label className="col-sm-3 col-form-label" >Password</label>
             <div className="col-sm-9">
@@ -106,7 +109,8 @@ function Login() {
                 }} 
               />
             </div>   
-        </div>
+        </div>}
+
         {(localStorage.getItem("token") !== "null") && <button className="login-btn" onClick={logout}>logout</button> }
         {(localStorage.getItem("token") === "null" ) && <button className="login-btn" onClick={login}>login</button>}
     
