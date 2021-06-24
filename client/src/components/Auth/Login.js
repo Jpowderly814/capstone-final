@@ -1,120 +1,161 @@
 import './Login.css';
 import Register from './Register';
-import { useState, useEffect } from "react";
-import Axios from "axios";
+import { useState } from 'react';
+import Axios from 'axios';
+import ErrorModal from '../UI/ErrorModal';
 //import { Link, Route } from 'react-router-dom';
 
 function Login() {
+  const [error, setError] = useState('');
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const[loggedIn, setLoggedIn] = useState(false);
-  const[loginStatus, setLoginStatus] = useState("null");
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem('token') !== 'null'
+  );
+  //const[loginStatus, setLoginStatus] = useState();
 
   const [isRegistering, setIsRegistering] = useState(false);
 
-    /*const saveRegistrationDataHandler = (enteredExpenseData) => {
-        const expenseData = {
-            ...enteredExpenseData,
-            id: Math.random().toString()
-        };
-        //props.onAddExpense(expenseData); //lifting state up
-    };*/
+  Axios.defaults.withCredentials = true;
 
   const startRegistrationHandler = () => {
-      setIsRegistering(true);
-  }
+    setIsRegistering(true);
+  };
 
   const stopRegistrationHandler = () => {
-      setIsRegistering(false);
-
-  }
+    setIsRegistering(false);
+  };
 
   const login = () => {
-    Axios.post("http://localhost:3001/login", {
-      username: username, password: password
+    Axios.post('http://localhost:3001/login', {
+      username: username,
+      password: password,
     }).then((response) => {
-      if(response.data.message){
-        setLoginStatus(response.data.message);
-      }else{
-        setLoginStatus(response.data[0].username);
+      if (response.data.message) {
+        setLoggedIn(false);
+        //setLoginStatus(response.data.message);
+        setError({
+          title: 'Invalid',
+          message: response.data.message,
+        });
+        return;
+      } else {
+        console.log(response.data.result[0]);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('expiresIn', response.data.token.expires);
+        localStorage.setItem('user', response.data.result[0].id);
+        console.log(localStorage.getItem('user'));
+
+        //setLoginStatus(response.data[0].RowDataPacket.username);
         setLoggedIn(true);
       }
-
     });
+
+    setUsername('');
+    setPassword('');
   };
 
   const logout = () => {
-    setLoginStatus(false); 
-    localStorage.setItem("token", "null");
-  }
+    Axios.post('http://localhost:3001/logout', {}).then((response) => {
+      if (response.data.message) {
+        setLoggedIn(true);
 
-  useEffect (() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
-      
-      if (response.data.loggedIn === true){
-        
-      setLoginStatus(response.data.user[0].username);
+        setError({
+          title: 'Invalid',
+          message: response.data.message,
+        });
+        return;
+      } else {
+        console.log();
+        localStorage.setItem('token', null);
+        localStorage.setItem('user', null);
+        console.log(localStorage.getItem('token'));
+        console.log(localStorage.getItem('user'));
+
+        //setLoginStatus(response.data[0].RowDataPacket.username);
+        setLoggedIn(true);
       }
-    }); 
-  }, []);
+    });
+    setLoggedIn(false);
+    localStorage.setItem('token', null);
+    localStorage.setItem('user', null);
+    setUsername('');
+    setPassword('');
+  };
 
-
+  const errorHandler = () => {
+    setError(null);
+  };
 
   return (
-
     <div className="login-register-container">
-        <div className="text-center">
-            <h2 className="login-register-header">Sign in</h2>
-        </div>
-    
-      <div className="login-register-form">
+      {console.log(loggedIn)}
 
-        <div className="form-group row">
-          <label className="col-sm-3 col-form-label" >Username</label>
+      {console.log(localStorage.getItem('token'))}
+      {error && (
+        <ErrorModal
+          title={error.title}
+          message={error.message}
+          onConfirm={errorHandler}
+        />
+      )}
+      <div className="text-center">
+        <h2 className="login-register-header">Sign in</h2>
+      </div>
+
+      <div className="login-register-form">
+        {localStorage.getItem('token') === 'null' && (
+          <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Username</label>
             <div className="col-sm-9">
               <input
                 type="text"
-                placeholder="Username..."
+                value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
               />
             </div>
-        </div> 
-
-        <div className="form-group row">
-          <label className="col-sm-3 col-form-label" >Password</label>
+          </div>
+        )}
+        {localStorage.getItem('token') === 'null' && (
+          <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Password</label>
             <div className="col-sm-9">
               <input
                 type="password"
-                placeholder="Password..."
+                value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
-                }} 
+                }}
               />
-            </div>   
-        </div>
+            </div>
+          </div>
+        )}
 
-        {(loggedIn === true) && <button className="login-btn" onClick={logout}>LogOut</button> }
-        <button className="login-btn" onClick={login}> Login </button>
-    
+        {localStorage.getItem('token') !== 'null' && (
+          <button className="login-btn" onClick={logout}>
+            logout
+          </button>
+        )}
+        {localStorage.getItem('token') === 'null' && (
+          <button className="login-btn" onClick={login}>
+            login
+          </button>
+        )}
       </div>
+      <div>
+        {!isRegistering && (
+          <button className="login-btn" onClick={startRegistrationHandler}>
+            register
+          </button>
+        )}
 
-      <div >
-      
-            {!isRegistering && <button className="login-btn" onClick={startRegistrationHandler}>Register</button>}
-            
-            {isRegistering && <Register onCancel={stopRegistrationHandler}/>}
-            
-        </div>
-
-        
-        
+        {isRegistering && <Register onCancel={stopRegistrationHandler} />}
+      </div>
     </div>
-
-
   );
 }
 

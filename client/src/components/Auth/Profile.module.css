@@ -1,0 +1,47 @@
+h1 {
+  padding-top: 1.5rem;
+}
+
+.users {
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 40rem;
+  font-family: 'Merriweather', serif;
+  background-color: #f2f2f7;
+}
+
+.users ul {
+  list-style: none;
+  padding: 1rem;
+}
+
+.users li {
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  background-color: white;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+.wrapper {
+  display: flex;
+  padding: 5rem;
+}
+
+.button {
+  display: inline-block;
+  border-radius: 10px;
+  background-color: rgb(90, 90, 153);
+  margin-top: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 0.5rem;
+  font-family: 'Merriweather', serif;
+  padding: 10px;
+  width: 20%;
+  transition: all 0.5s;
+  cursor: pointer;
+}

@@ -1,0 +1,27 @@
+.button {
+  display: inline-block;
+  border-radius: 10px;
+  background-color: rgb(90, 90, 153);
+  margin-top: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 1.2rem;
+  font-family: 'Merriweather', serif;
+  padding: 10px;
+  width: 40%;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.button:hover,
+.button:active {
+  background: rgb(90, 90, 153);
+  border-color: rgb(90, 90, 153);
+}
+
+.button:focus {
+  outline: none;
+}
