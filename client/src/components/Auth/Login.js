@@ -1,18 +1,19 @@
 import './Login.css';
 import Register from './Register';
-import { useState } from "react";
-import Axios from "axios";
-import ErrorModal from "../UI/ErrorModal";
+import { useState } from 'react';
+import Axios from 'axios';
+import ErrorModal from '../UI/ErrorModal';
 //import { Link, Route } from 'react-router-dom';
 
 function Login() {
+  const [error, setError] = useState('');
 
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const[loggedIn, setLoggedIn] = useState(localStorage.getItem("token")!==null);
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem('token') !== 'null'
+  );
   //const[loginStatus, setLoginStatus] = useState();
 
   const [isRegistering, setIsRegistering] = useState(false);
@@ -20,74 +21,95 @@ function Login() {
   Axios.defaults.withCredentials = true;
 
   const startRegistrationHandler = () => {
-      setIsRegistering(true);
-  }
+    setIsRegistering(true);
+  };
 
   const stopRegistrationHandler = () => {
-      setIsRegistering(false);
-  }
+    setIsRegistering(false);
+  };
 
   const login = () => {
-
-    Axios.post("http://localhost:3001/login", {
-      username: username, 
-      password: password
+    Axios.post('http://localhost:3001/login', {
+      username: username,
+      password: password,
     }).then((response) => {
-      if(response.data.message){
+      if (response.data.message) {
         setLoggedIn(false);
         //setLoginStatus(response.data.message);
         setError({
           title: 'Invalid',
-          message: response.data.message
+          message: response.data.message,
         });
         return;
-      }else{
+      } else {
         console.log(response.data.result[0]);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", response.data.result[0].id);
-        console.log(localStorage.getItem("user"));
-        
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('expiresIn', response.data.token.expires);
+        localStorage.setItem('user', response.data.result[0].id);
+        console.log(localStorage.getItem('user'));
+
         //setLoginStatus(response.data[0].RowDataPacket.username);
         setLoggedIn(true);
       }
-
     });
 
-    setUsername("");
-    setPassword("");
-    
+    setUsername('');
+    setPassword('');
   };
 
   const logout = () => {
-    //Axios.post("http://localhost:3001/logout");
-    setLoggedIn(false); 
-    localStorage.setItem("token", "null");
+    Axios.post('http://localhost:3001/logout', {}).then((response) => {
+      if (response.data.message) {
+        setLoggedIn(true);
 
-    setUsername("");
-    setPassword("");
+        setError({
+          title: 'Invalid',
+          message: response.data.message,
+        });
+        return;
+      } else {
+        console.log();
+        localStorage.setItem('token', null);
+        localStorage.setItem('user', null);
+        console.log(localStorage.getItem('token'));
+        console.log(localStorage.getItem('user'));
 
-  }
+        //setLoginStatus(response.data[0].RowDataPacket.username);
+        setLoggedIn(true);
+      }
+    });
+    setLoggedIn(false);
+    localStorage.setItem('token', null);
+    localStorage.setItem('user', null);
+    setUsername('');
+    setPassword('');
+  };
 
   const errorHandler = () => {
     setError(null);
-};
+  };
 
   return (
-
     <div className="login-register-container">
       {console.log(loggedIn)}
-      {console.log(localStorage.getItem("token"))}
-      {error && (<ErrorModal title={error.title} message={error.message} onConfirm={errorHandler}/>)}
-        <div className="text-center">
-            <h2 className="login-register-header">Sign in</h2>
-        </div>
-    
+
+      {console.log(localStorage.getItem('token'))}
+      {error && (
+        <ErrorModal
+          title={error.title}
+          message={error.message}
+          onConfirm={errorHandler}
+        />
+      )}
+      <div className="text-center">
+        <h2 className="login-register-header">Sign in</h2>
+      </div>
+
       <div className="login-register-form">
-      {(localStorage.getItem("token") === "null" ) && 
-        <div className="form-group row">
-          <label className="col-sm-3 col-form-label" >Username</label>
+        {localStorage.getItem('token') === 'null' && (
+          <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Username</label>
             <div className="col-sm-9">
-            
               <input
                 type="text"
                 value={username}
@@ -96,38 +118,44 @@ function Login() {
                 }}
               />
             </div>
-        </div> }
-        {(localStorage.getItem("token") === "null" ) && 
-        <div className="form-group row">
-          <label className="col-sm-3 col-form-label" >Password</label>
+          </div>
+        )}
+        {localStorage.getItem('token') === 'null' && (
+          <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Password</label>
             <div className="col-sm-9">
               <input
                 type="password"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
-                }} 
+                }}
               />
-            </div>   
-        </div>}
+            </div>
+          </div>
+        )}
 
-        {(localStorage.getItem("token") !== "null") && <button className="login-btn" onClick={logout}>logout</button> }
-        {(localStorage.getItem("token") === "null" ) && <button className="login-btn" onClick={login}>login</button>}
-    
+        {localStorage.getItem('token') !== 'null' && (
+          <button className="login-btn" onClick={logout}>
+            logout
+          </button>
+        )}
+        {localStorage.getItem('token') === 'null' && (
+          <button className="login-btn" onClick={login}>
+            login
+          </button>
+        )}
       </div>
-      <div >
-      
-            {!isRegistering && <button className="login-btn" onClick={startRegistrationHandler}>register</button>}
-            
-            {isRegistering && <Register onCancel={stopRegistrationHandler}/>}
-            
-        </div>
+      <div>
+        {!isRegistering && (
+          <button className="login-btn" onClick={startRegistrationHandler}>
+            register
+          </button>
+        )}
 
-        
-        
+        {isRegistering && <Register onCancel={stopRegistrationHandler} />}
+      </div>
     </div>
-
-
   );
 }
 
