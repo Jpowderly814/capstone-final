@@ -112,7 +112,6 @@ export default function Dashboard({ code }) {
           );
 
           return {
-            //artist: track.artists[0].name,
             title: playlist.name,
             uri: playlist.uri,
             albumUrl: smallestAlbumImage.url,
