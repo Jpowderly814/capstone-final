@@ -1,17 +1,12 @@
-
-  .box {
-    width: 300px;
-  }
-  .w-6 {
-    width: 1.5em;
-  }
-  .h-6 {
-    height: 1.5em;
-  }
-  .flex {
-    display: flex;
-  }
-  .cursor-pointer {
-    cursor: pointer;
-  }
- 
+.w-6 {
+  width: 1.5em;
+}
+.h-6 {
+  height: 1.5em;
+}
+.flex {
+  display: flex;
+}
+.cursor-pointer {
+  cursor: pointer;
+}

@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import useAuth from './useAuth';
 import Player from './Player';
-//import TrackSearchResult from "./TrackSearchResult"
+
 import PlaylistSearchResult from './PlaylistSearchResult';
 import { Container, Form } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-node';
-//import axios from "axios"
-import TrackList from './TrackList';
+
 import Card from '../UI/Card';
 import RatePlaylist from './RatePlaylist';
 import Button from '../UI/Button';
@@ -22,7 +21,6 @@ export default function Dashboard({ code }) {
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [playingPlaylist, setPlayingPlaylist] = useState();
-  const [tracks, setTracks] = useState('');
   const [playlistTracks, setPlaylistTracks] = useState([]);
 
   function choosePlaylist(playlist) {
@@ -48,14 +46,10 @@ export default function Dashboard({ code }) {
           };
         })
       );
-
-      //console.log(res.body.items["track"].track.name);
     });
-    //artist: track.artists[0].name,
 
     setPlayingPlaylist(playlist);
     setSearch('');
-    setTracks('');
   }
 
   useEffect(() => {
@@ -177,35 +171,27 @@ export default function Dashboard({ code }) {
         ))}
         {searchResults.length === 0 && (
           <div>
-            <Card>
-              <div>
-                {' '}
-                {playingPlaylist && (
-                  <div>
+            <Card className="playlist-header">
+              {playingPlaylist && (
+                <div className="card-sub">
+                  <div className="header-title">
                     {playingPlaylist?.title}
                     <RatePlaylist playlist={playingPlaylist?.uri} />
                   </div>
-                )}{' '}
-              </div>
-              <div>
-                {' '}
-                {playingPlaylist && (
+
                   <Button onClick={savePlaylist}>Save Playlist</Button>
-                )}
-              </div>
+                  <Button onClick={savePlaylist}>Rate</Button>
+                </div>
+              )}
             </Card>
-            <div>
-              {playingPlaylist && <TrackList trackList={playlistTracks} />}
-            </div>
+
+            <Player
+              accessToken={accessToken}
+              trackUri={playingPlaylist?.uri}
+              trackList={playlistTracks}
+            />
           </div>
         )}
-      </div>
-      <div>
-        <Player
-          accessToken={accessToken}
-          trackUri={playingPlaylist?.uri}
-          trackList={playlistTracks}
-        />
       </div>
     </Container>
   );

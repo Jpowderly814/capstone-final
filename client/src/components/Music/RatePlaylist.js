@@ -1,9 +1,31 @@
-import React from 'react';
+import { useState, useMemo } from 'react';
 import './RatePlaylist.css';
 import axios from 'axios';
 //import StarRating from 'react-star-rating'
 
 const RatePlaylist = (props) => {
+  const [isRating, setIsRating] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+
+  const startRatingHandler = () => {
+    setIsRating(true);
+  };
+
+  const stopRatingHandler = () => {
+    setIsRating(false);
+  };
+
+  const onMouseEnter = (index) => {
+    setHoverRating(index);
+  };
+  const onMouseLeave = () => {
+    setHoverRating(0);
+  };
+  /*const onSaveRating = (index) => {
+    setRating(index);
+  };*/
+
   function RatingIcon(props) {
     const {
       index,
@@ -13,7 +35,7 @@ const RatePlaylist = (props) => {
       onMouseLeave,
       onSaveRating,
     } = props;
-    const fill = React.useMemo(() => {
+    const fill = useMemo(() => {
       if (hoverRating >= index) {
         return 'yellow';
       } else if (!hoverRating && rating >= index) {
@@ -53,19 +75,6 @@ const RatePlaylist = (props) => {
     );
   }
 
-  const [rating, setRating] = React.useState(0);
-  const [hoverRating, setHoverRating] = React.useState(0);
-  const onMouseEnter = (index) => {
-    setHoverRating(index);
-  };
-  const onMouseLeave = () => {
-    setHoverRating(0);
-  };
-  /*const onSaveRating = (index) => {
-    setRating(index);
-  };
-
-  */
   const onSaveRating = (index) => {
     console.log(localStorage.getItem('user'));
 
@@ -81,13 +90,20 @@ const RatePlaylist = (props) => {
       });
   };
 
+  const getAverageRating = () => {
+    const playlistId = props.playlist.substring(17);
+    axios.get(`http://localhost:3001/rate/${playlistId}`).then((response) => {
+      console.log(response.data);
+    });
+  };
+
   return (
     <div className="box flex">
       {[1, 2, 3, 4, 5].map((index) => {
         return (
           <RatingIcon
             index={index}
-            rating={rating}
+            rating={getAverageRating}
             hoverRating={hoverRating}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
