@@ -91,9 +91,6 @@ function Login() {
 
   return (
     <div className="login-register-container">
-      {console.log(loggedIn)}
-
-      {console.log(localStorage.getItem('token'))}
       {error && (
         <ErrorModal
           title={error.title}

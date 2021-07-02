@@ -19,7 +19,7 @@ const app = express();
 app.use(
   cors({
     origin: ['http://localhost:3000'],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE'],
     credentials: true,
   })
 );
@@ -214,7 +214,7 @@ app.post('/save', (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        result.send('Values inserted');
+        console.log('Values inserted');
       }
     }
   );
@@ -231,6 +231,21 @@ app.get('/favorites/:id', (req, res) => {
   });
 });
 
+app.delete('/favorites/delete/:id', (req, res) => {
+  const id = req.params.id;
+  db.query(
+    'DELETE FROM capstoneFinal.favorites WHERE id = ?',
+    id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.post('/rate', (req, res) => {
   const playlistId = req.body.playlistId;
   const userId = req.body.userId;
@@ -243,7 +258,22 @@ app.post('/rate', (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        result.send('Values inserted');
+        console.log(result);
+      }
+    }
+  );
+});
+
+app.get('/rate/:id', (req, res) => {
+  const playlist = req.params.id;
+  db.query(
+    'SELECT * FROM ratings WHERE playlistId = ?',
+    playlist,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
       }
     }
   );
