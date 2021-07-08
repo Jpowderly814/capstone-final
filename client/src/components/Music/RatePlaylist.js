@@ -90,20 +90,12 @@ const RatePlaylist = (props) => {
       });
   };
 
-  const getAverageRating = () => {
-    const playlistId = props.playlist.substring(17);
-    axios.get(`http://localhost:3001/rate/${playlistId}`).then((response) => {
-      console.log(response.data);
-    });
-  };
-
   return (
     <div className="box flex">
       {[1, 2, 3, 4, 5].map((index) => {
         return (
           <RatingIcon
             index={index}
-            rating={getAverageRating}
             hoverRating={hoverRating}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

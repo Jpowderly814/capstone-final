@@ -1,9 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Card from '../UI/Card';
 import classes from './Profile.module.css';
 import axios from 'axios';
+import { UserContext } from '../..';
 
 const Profile = () => {
+  const userService = useContext(UserContext);
+
+  console.log(userService.login());
+
   const userId = localStorage.getItem('user');
   const [favoritesList, setFavoritesList] = useState([]);
   const [isEditing, setIsEditing] = useState(true);
