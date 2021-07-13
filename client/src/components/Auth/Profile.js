@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import Card from '../UI/Card';
 import classes from './Profile.module.css';
 import axios from 'axios';
-import { UserContext } from '../..';
+import { UserContext } from '../../Services/UserService';
 
 const Profile = () => {
   const userService = useContext(UserContext);

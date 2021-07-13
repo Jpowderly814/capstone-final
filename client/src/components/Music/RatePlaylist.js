@@ -4,17 +4,17 @@ import axios from 'axios';
 //import StarRating from 'react-star-rating'
 
 const RatePlaylist = (props) => {
-  const [isRating, setIsRating] = useState(false);
-  const [rating, setRating] = useState(0);
+  // const [isRating, setIsRating] = useState(false);
+  //const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
 
-  const startRatingHandler = () => {
+  /* const startRatingHandler = () => {
     setIsRating(true);
   };
 
   const stopRatingHandler = () => {
     setIsRating(false);
-  };
+  }; */
 
   const onMouseEnter = (index) => {
     setHoverRating(index);

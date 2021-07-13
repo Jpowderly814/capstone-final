@@ -3,3 +3,7 @@ describe('Registering users work as expected', () => {
     let user = { username: 'user123', password: 'password123' };
   });
 });
+
+describe('test', () => {
+  it('does somthing', () => {});
+});
