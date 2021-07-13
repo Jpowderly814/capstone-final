@@ -1,7 +1,7 @@
 import './Login.css';
 import Register from './Register';
 import { useState, useContext } from 'react';
-import { UserContext } from '../../Services/UserService';
+import { UserContext } from '../..';
 import Axios from 'axios';
 import ErrorModal from '../UI/ErrorModal';
 //import { Link, Route } from 'react-router-dom';

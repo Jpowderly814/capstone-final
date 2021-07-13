@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import Card from '../UI/Card';
 import classes from './Profile.module.css';
 import axios from 'axios';
-import { UserContext } from '../../Services/UserService';
+import { UserContext } from '../..';
 
 const Profile = () => {
   const userService = useContext(UserContext);
@@ -57,13 +57,13 @@ const Profile = () => {
           {favoritesList.map((favorite) => (
             <li key={favorite.id}>
               {favorite.name}
-
               <button
+                className={classes.button}
                 onClick={() => {
                   removeFavorite(favorite.id);
                 }}
               >
-                Remove {favorite.id}
+                Remove
               </button>
             </li>
           ))}
