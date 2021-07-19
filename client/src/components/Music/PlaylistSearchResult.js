@@ -1,38 +1,24 @@
-import React from "react"
+import React from 'react';
 
-export default function PlaylistSearchResult({ playlist , choosePlaylist }) {
-  
+export default function PlaylistSearchResult({ playlist, choosePlaylist }) {
   function handlePlay() {
-    choosePlaylist(playlist)
+    choosePlaylist(playlist);
   }
 
-  /*return (
+  return (
     <div
       className="d-flex m-2 align-items-center"
-      style={{ cursor: "pointer" }}
+      style={{ cursor: 'pointer' }}
       onClick={handlePlay}
     >
-      <img src={track.albumUrl} style={{ height: "64px", width: "64px" }} />
-      <div className="ml-3">
-        <div>{track.title}</div>
-        <div className="text-muted">{track.artist}</div>
-      </div>
-    </div>
-  )*/
-
-return (
-    <div 
-        className="d-flex m-2 align-items-center"
-        style={{ cursor: "pointer" }}
-        onClick={handlePlay}
-    >
-        <img src={playlist.albumUrl} alt="" style={{ height: "64px", width: "64px" }} />
+      <img
+        src={playlist.albumUrl}
+        alt=""
+        style={{ height: '64px', width: '64px' }}
+      />
       <div className="ml-3">
         <div>{playlist.title}</div>
-        
       </div>
-
     </div>
-)
-
+  );
 }

@@ -1,24 +1,23 @@
 import './Login.css';
 import Register from './Register';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { UserContext } from '../..';
 import Axios from 'axios';
 import ErrorModal from '../UI/ErrorModal';
 //import { Link, Route } from 'react-router-dom';
 
 function Login() {
   const [error, setError] = useState('');
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [isRegistering, setIsRegistering] = useState(false);
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem('token') !== 'null'
   );
-  //const[loginStatus, setLoginStatus] = useState();
-
-  const [isRegistering, setIsRegistering] = useState(false);
-
+  const userService = useContext(UserContext);
   Axios.defaults.withCredentials = true;
+
+  const handleLogin = async (e) => {};
 
   const startRegistrationHandler = () => {
     setIsRegistering(true);
@@ -35,7 +34,6 @@ function Login() {
     }).then((response) => {
       if (response.data.message) {
         setLoggedIn(false);
-        //setLoginStatus(response.data.message);
         setError({
           title: 'Invalid',
           message: response.data.message,
@@ -43,12 +41,12 @@ function Login() {
         return;
       } else {
         console.log(response.data.result[0]);
+        // Get rid of local storage
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('expiresIn', response.data.token.expires);
         localStorage.setItem('user', response.data.result[0].id);
         console.log(localStorage.getItem('user'));
 
-        //setLoginStatus(response.data[0].RowDataPacket.username);
         setLoggedIn(true);
       }
     });
@@ -91,9 +89,6 @@ function Login() {
 
   return (
     <div className="login-register-container">
-      {console.log(loggedIn)}
-
-      {console.log(localStorage.getItem('token'))}
       {error && (
         <ErrorModal
           title={error.title}

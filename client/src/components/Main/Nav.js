@@ -4,28 +4,31 @@ import Login from '../Auth/Login';
 import Home from './Home';
 import Profile from '../Auth/Profile';
 //import Connect from '../Music/Connect';
-import A from '../Music/A';
+
+import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 function Nav() {
   return (
-    <div className="header">
+    <div>
       <Router>
-        <nav>
-          <Link to="/">
-            <h3>Home</h3>
-          </Link>
-
-          <ul className="nav-links">
-            <Link to="/login">login/logout</Link>
-            <Link to="/profile">profile</Link>
-            <Link to="/connect">music</Link>
-          </ul>
-        </nav>
-
+        <div className="header">
+          <nav>
+            <Link to="/">
+              <div className="home-link">
+                <h3>Home</h3>
+              </div>
+            </Link>
+            <div className="account-button">
+              <DropdownButton className="dropdown" title="account">
+                <Dropdown.Item href="login">login/logout</Dropdown.Item>
+                <Dropdown.Item href="profile">profile</Dropdown.Item>
+              </DropdownButton>
+            </div>
+          </nav>
+        </div>
         <Route path="/" component={Home} exact />
         <Route path="/profile" component={Profile} />
         <Route path="/login" component={Login} exact />
-        <Route path="/connect" component={A} exact />
       </Router>
     </div>
   );

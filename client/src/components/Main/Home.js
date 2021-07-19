@@ -1,25 +1,13 @@
 import React from 'react';
 import './Home.css';
-//import Dashboard from '../Music/Dashboard';
-//import {BrowserRouter as Router, Route} from 'react-router-dom';
+
+import Connect from './Connect';
+import Dashboard from '../Music/Dashboard';
+
+const code = new URLSearchParams(window.location.search).get('code');
 
 function Home() {
-  return (
-    <div className="home-search-container">
-      <div className="home-search-box">
-        <input
-          type="text"
-          className="home-search-input"
-          id="searchTerm"
-          name="searchTerm"
-          placeholder="This is a search bar"
-        />
-        <button type="submit" className="home-search-btn" value="Search">
-          <span>Search</span>
-        </button>
-      </div>
-    </div>
-  );
+  return code ? <Dashboard code={code} /> : <Connect />;
 }
 
 export default Home;
