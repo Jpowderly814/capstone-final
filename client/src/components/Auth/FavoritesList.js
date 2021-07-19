@@ -1,17 +1,15 @@
 import React from 'react';
 
-
-function FavoritesList (props) {
-
-    return (
-        <div>
-        <ul>
-            {props.map((favorite) => (
+function FavoritesList(props) {
+  return (
+    <div>
+      <ul>
+        {props.map((favorite) => (
           <li key={favorite.id}>{favorite.name}</li>
         ))}
       </ul>
-        </div>
-    );
+    </div>
+  );
 }
 
 export default FavoritesList;
