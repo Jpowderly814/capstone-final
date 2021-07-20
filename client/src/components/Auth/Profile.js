@@ -45,10 +45,6 @@ const Profile = () => {
   return (
     <div className={classes.wrapper}>
       <Card className={classes.users}>
-        <h1>User</h1>
-        <p>{localStorage.getItem('user')}</p>
-      </Card>
-      <Card className={classes.users}>
         <h1>Favorite Playlists</h1>
         {getFavorites(userId)}
         {favoritesList.length === 0 && <p>None</p>}

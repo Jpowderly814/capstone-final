@@ -16,6 +16,15 @@ nav {
   color: black;
 }
 
+.account-button {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.home-link {
+  margin-left: 20px;
+}
+
 :visited {
   color: rgb(45, 45, 73);
 }

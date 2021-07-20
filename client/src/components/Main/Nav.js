@@ -9,19 +9,23 @@ import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 function Nav() {
   return (
-    <div className="header">
+    <div>
       <Router>
-        <nav>
-          <Link to="/">
-            <h3>Home</h3>
-          </Link>
-
-          <DropdownButton className="dropdown" title="account">
-            <Dropdown.Item href="login">login/logout</Dropdown.Item>
-            <Dropdown.Item href="profile">profile</Dropdown.Item>
-          </DropdownButton>
-        </nav>
-
+        <div className="header">
+          <nav>
+            <Link to="/">
+              <div className="home-link">
+                <h3>Home</h3>
+              </div>
+            </Link>
+            <div className="account-button">
+              <DropdownButton className="dropdown" title="account">
+                <Dropdown.Item href="login">login/logout</Dropdown.Item>
+                <Dropdown.Item href="profile">profile</Dropdown.Item>
+              </DropdownButton>
+            </div>
+          </nav>
+        </div>
         <Route path="/" component={Home} exact />
         <Route path="/profile" component={Profile} />
         <Route path="/login" component={Login} exact />
