@@ -103,6 +103,7 @@ const RatePlaylist = (props) => {
           />
         );
       })}
+      <button onClick={props.onCancel}>cancel</button>
     </div>
   );
 };

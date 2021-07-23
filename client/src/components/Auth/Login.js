@@ -109,14 +109,16 @@ function Login() {
           </button>
         )}
       </div>
-      <div>
-        {!isRegistering && (
-          <button className="login-btn" onClick={startRegistrationHandler}>
-            register
-          </button>
-        )}
-        {isRegistering && <Register onCancel={stopRegistrationHandler} />}
-      </div>
+      {localStorage.getItem('token') === 'null' && (
+        <div>
+          {!isRegistering && (
+            <button className="login-btn" onClick={startRegistrationHandler}>
+              register
+            </button>
+          )}
+          {isRegistering && <Register onCancel={stopRegistrationHandler} />}
+        </div>
+      )}
     </div>
   );
 }
