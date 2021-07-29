@@ -1,10 +1,17 @@
 import Axios from 'axios';
 
+import User from '../Domain/Entities/Types/User';
+
 class UserService {
-  #_user = null;
+  _user = null; // potato - i could not get this to set values in login with the private setting - how to fix this?
+
   get user() {
-    return this.#_user;
+    return this._user;
   }
+
+  // get user() {
+  //   return this.user;
+  // }
 
   async register(usernameReg, passwordReg, emailReg) {
     return Axios.post('http://localhost:3001/login/register', {
@@ -25,7 +32,8 @@ class UserService {
         return response;
       } else {
         console.log(response.data.result[0]);
-
+        this._user = new User(response.data.result[0].username);
+        // console.log(this.person);
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('expiresIn', response.data.token.expires);
         localStorage.setItem('user', response.data.result[0].id);

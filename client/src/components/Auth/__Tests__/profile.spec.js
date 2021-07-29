@@ -1,22 +1,34 @@
-// import FavoritesList from '../FavoritesList';
-// import mockAxios from 'jest-mock-axios';
+import axios from 'axios';
+import { render, screen } from '@testing-library/react';
+import FavoritesList from '../FavoritesList';
+import Profile from '../Profile';
 
-// describe('Profile component', () => {
-//   afterEach(() => {
-//     // cleaning up the mess left behind the previous test
-//   });
+describe('Profile component', () => {
+  jest.mock('axios', () => {
+    return {
+      post: jest.fn(),
+    };
+  });
 
-//   it('does somthing', () => {
-//     expect(mockAxios.post).toHaveBeenCalled();
+  let responseObj = {
+    data: [
+      { id: '123', name: 'playlist1' },
+      { id: '456', name: 'playlist2' },
+    ],
+  };
 
-//     let responseObj = {
-//       data: [
-//         { id: '123', name: 'playlist1' },
-//         { id: '456', name: 'playlist2' },
-//       ],
-//     };
-//     mockAxios.mockResponse(responseObj);
-
-//     expect(FavoritesList.length).toEqual(2);
-//   });
-// });
+  // jest.mock('axios', () => {
+  //   return {
+  //     post: jest.fn(),
+  //   };
+  // });
+  // afterEach(() => {
+  //   // cleaning up the mess left behind the previous test
+  // });
+  it('renders Favorites List as a text', () => {
+    render(<Profile />);
+    // axios.post.mockResolvedValue(Promise.resolve(responseObj));
+    const playlistElement = screen.getByText('playlist1');
+    expect(playlistElement).toBeInTheDocument();
+  });
+});

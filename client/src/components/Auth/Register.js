@@ -2,7 +2,7 @@ import './Login.css';
 import { useState, useContext } from 'react';
 import ErrorModal from '../UI/ErrorModal';
 import validator from 'validator';
-import { UserContext } from '../..';
+import { UserContext } from '../../App';
 
 const Register = (props) => {
   const [emailReg, setEmailReg] = useState('');

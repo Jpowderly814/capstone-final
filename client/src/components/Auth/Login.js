@@ -1,7 +1,7 @@
 import './Login.css';
 import Register from './Register';
 import { useState, useContext } from 'react';
-import { UserContext } from '../..';
+import { UserContext } from '../../App';
 import Axios from 'axios';
 import ErrorModal from '../UI/ErrorModal';
 
@@ -27,6 +27,8 @@ function Login() {
         message: response.data.message,
       });
     }
+    // console.log(user);
+    console.log(userService.user);
     setLoggedIn(true);
     setUsername('');
     setPassword('');
@@ -99,9 +101,13 @@ function Login() {
         )}
 
         {localStorage.getItem('token') !== 'null' && (
-          <button className="login-btn" onClick={handleLogout}>
-            logout
-          </button>
+          <div>
+            {console.log(userService.user?.name)}
+            <p> You are logged in {userService._user?.name}</p>
+            <button className="login-btn" onClick={handleLogout}>
+              logout
+            </button>
+          </div>
         )}
         {localStorage.getItem('token') === 'null' && (
           <button className="login-btn" onClick={handleLogin}>
