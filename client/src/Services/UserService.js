@@ -1,6 +1,21 @@
 import Axios from 'axios';
 
 class UserService {
+  #_user = null;
+  get user() {
+    return this.#_user;
+  }
+
+  async register(usernameReg, passwordReg, emailReg) {
+    return Axios.post('http://localhost:3001/login/register', {
+      username: usernameReg,
+      password: passwordReg,
+      email: emailReg,
+    }).then((response) => {
+      console.log(response);
+    });
+  }
+
   async login(username, password) {
     return Axios.post('http://localhost:3001/login', {
       username: username,
@@ -34,8 +49,6 @@ class UserService {
       }
     });
   }
-
-  register() {}
 }
 
 export default UserService;

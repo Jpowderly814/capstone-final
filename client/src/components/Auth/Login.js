@@ -1,6 +1,6 @@
 import './Login.css';
 import Register from './Register';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { UserContext } from '../..';
 import Axios from 'axios';
 import ErrorModal from '../UI/ErrorModal';

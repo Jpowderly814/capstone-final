@@ -1,55 +1,53 @@
-import React from 'react';
-import { wrapper, render, screen } from '@testing-library/react';
+// import React from 'react';
+// import { wrapper, render, screen } from '@testing-library/react';
 
-import { shallow, configure } from 'enzyme';
+// import { shallow, configure } from 'enzyme';
 
-import Login from '../Login';
+// import Login from '../Login';
 
-// import Adapter from 'enzyme-adapter-react-16';
-import axios from 'axios';
+// // import Adapter from 'enzyme-adapter-react-16';
+// import axios from 'axios';
 
-// configure({ adapter: new Adapter() });
+// // configure({ adapter: new Adapter() });
 
-jest.mock('axios', () => {
-  return {
-    post: jest.fn()
-  };
-});
+// jest.mock('axios', () => {
+//   return {
+//     post: jest.fn()
+//   };
+// });
 
-describe('Login component', () => {
-  describe('login tests', () => {
-    
-    const username = 'username123';
-    const password = 'password123';
+// describe('Login component', () => {
+//   describe('login tests', () => {
 
-    beforeEach(() => {
-      //Test error response tests
-      axios.post.mockResolvedValue({});
-    });
+//     const username = 'username123';
+//     const password = 'password123';
 
-    it('should call endpoint with given username & password', () => {
-      // let wrapper = shallow(<Login />);
-      //  wrapper.instance().login = jest.fn();
-      //  wrapper.update();
+//     beforeEach(() => {
+//       //Test error response tests
+//       axios.post.mockResolvedValue({});
+//     });
 
-      expect(axios.post).toBeCalledWith('http://localhost:3001/login', {
-        username,
-        password,
-      });
-    });
-  });
-});
+//     it('should call endpoint with given username & password', () => {
+//       // let wrapper = shallow(<Login />);
+//       //  wrapper.instance().login = jest.fn();
+//       //  wrapper.update();
 
-describe('Login', () => {
-  it('should call axios with username and password', async () => {
-    const username = 'username123';
-    const password = 'password123';
+//       expect(axios.post).toBeCalledWith('http://localhost:3001/login', {
+//         username,
+//         password,
+//       });
+//     });
+//   });
+// });
 
-    window.axios = jest.fn();
-    window.axios.mockResolvedValueOnce({});
-    render(<Login />);
+// describe('Login', () => {
+//   it('should call axios with username and password', async () => {
+//     const username = 'username123';
+//     const password = 'password123';
 
- 
+//     window.axios = jest.fn();
+//     window.axios.mockResolvedValueOnce({});
+//     render(<Login />);
 
-  });
-});
+//   });
+// });
