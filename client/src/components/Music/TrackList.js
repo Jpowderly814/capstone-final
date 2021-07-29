@@ -1,12 +1,12 @@
 import React from 'react';
 // import './TrackList.css';
 
-const TrackList = (trackList) => {
-  console.log(trackList);
+const TrackList = (props) => {
+  console.log(props.trackList);
 
   return (
     <div>
-      {trackList.trackList.map((name, index) => {
+      {props.trackList.map((name, index) => {
         return (
           <div key={index}>
             <div
@@ -17,6 +17,7 @@ const TrackList = (trackList) => {
                 src={name.albumUrl}
                 alt=""
                 style={{ height: '64px', width: '64px' }}
+                onClick={props.selectTrack}
               />
               <div className="ml-3">
                 <div>{name.title}</div>
