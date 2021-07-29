@@ -258,7 +258,7 @@ app.post('/rate', (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(result);
+        // console.log(result);
       }
     }
   );

@@ -88,6 +88,7 @@ const RatePlaylist = (props) => {
       .then((response) => {
         console.log('Success!');
       });
+    props.onCancel();
   };
 
   return (

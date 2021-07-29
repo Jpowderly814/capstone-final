@@ -203,7 +203,12 @@ export default function Dashboard({ code }) {
                         Rate Playlist
                       </Button>
                     )}
-                    {isRating && <RatePlaylist onCancel={stopRatingHandler} />}
+                    {isRating && (
+                      <RatePlaylist
+                        playlist={playingPlaylist?.uri}
+                        onCancel={stopRatingHandler}
+                      />
+                    )}
                   </div>
                 </div>
               )}
