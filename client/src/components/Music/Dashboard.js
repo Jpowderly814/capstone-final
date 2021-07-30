@@ -5,7 +5,7 @@ import Player from './Player';
 import PlaylistSearchResult from './PlaylistSearchResult';
 import { Container, Form } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-node';
-
+import AverageRating from './AverageRating';
 import Card from '../UI/Card';
 import RatePlaylist from './RatePlaylist';
 import Button from '../UI/Button';
@@ -23,6 +23,14 @@ export default function Dashboard({ code }) {
   const [searchResults, setSearchResults] = useState([]);
   const [playingPlaylist, setPlayingPlaylist] = useState('');
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [isRating, setIsRating] = useState('');
+
+  const startRatingHandler = () => {
+    setIsRating(true);
+  };
+  const stopRatingHandler = () => {
+    setIsRating(false);
+  };
 
   function choosePlaylist(playlist) {
     console.log(playlist);
@@ -184,11 +192,24 @@ export default function Dashboard({ code }) {
                 <div className="card-sub">
                   <div className="header-title">
                     {playingPlaylist?.title}
-                    <RatePlaylist playlist={playingPlaylist?.uri} />
+                    <AverageRating playlist={playingPlaylist?.uri} />
                   </div>
 
                   <Button onClick={savePlaylist}>Save Playlist</Button>
-                  <Button onClick={savePlaylist}>Rate</Button>
+
+                  <div>
+                    {!isRating && (
+                      <Button onClick={startRatingHandler}>
+                        Rate Playlist
+                      </Button>
+                    )}
+                    {isRating && (
+                      <RatePlaylist
+                        playlist={playingPlaylist?.uri}
+                        onCancel={stopRatingHandler}
+                      />
+                    )}
+                  </div>
                 </div>
               )}
             </Card>

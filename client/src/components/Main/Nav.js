@@ -1,13 +1,25 @@
-import './Nav.css';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import Login from '../Auth/Login';
 import Home from './Home';
 import Profile from '../Auth/Profile';
-//import Connect from '../Music/Connect';
+import './Nav.css';
 
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 function Nav() {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem('token') !== 'null'
+  );
+
+  // const isLoggedIn = false;
+
+  // const currentUser = localStorage.getItem("user");
   return (
     <div>
       <Router>
@@ -26,9 +38,16 @@ function Nav() {
             </div>
           </nav>
         </div>
-        <Route path="/" component={Home} exact />
-        <Route path="/profile" component={Profile} />
         <Route path="/login" component={Login} exact />
+        <Route exact path="/">
+          {isLoggedIn ? <Home /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route exact path="/profile">
+          {isLoggedIn ? <Profile /> : <Redirect to="/login" />}
+        </Route>
+
+        {console.log(isLoggedIn)}
       </Router>
     </div>
   );

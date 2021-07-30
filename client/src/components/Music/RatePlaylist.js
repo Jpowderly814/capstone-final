@@ -88,6 +88,7 @@ const RatePlaylist = (props) => {
       .then((response) => {
         console.log('Success!');
       });
+    props.onCancel();
   };
 
   return (
@@ -103,6 +104,7 @@ const RatePlaylist = (props) => {
           />
         );
       })}
+      <button onClick={props.onCancel}>cancel</button>
     </div>
   );
 };
