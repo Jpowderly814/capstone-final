@@ -2,8 +2,6 @@ import React from 'react';
 // import './TrackList.css';
 
 const TrackList = (props) => {
-  console.log(props.trackList);
-
   return (
     <div>
       {props.trackList.map((name, index) => {
@@ -12,7 +10,8 @@ const TrackList = (props) => {
             <div
               className="d-flex m-2 align-items-center"
               style={{ cursor: 'pointer' }}
-              onClick={console.log(name.uri)}
+              type="submit"
+              onClick={() => props.selectTrack(index, name.uri)}
             >
               <img
                 src={name.albumUrl}
@@ -22,7 +21,6 @@ const TrackList = (props) => {
               <div className="ml-3">
                 <div>{name.title}</div>
               </div>
-              <button onClick={console.log(name.uri)}>play</button>
             </div>
           </div>
         );

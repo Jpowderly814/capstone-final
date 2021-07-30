@@ -8,7 +8,7 @@ export default function Player({
   trackList,
 }) {
   const [play, setPlay] = useState(false);
-  const [trackPlaying, setTrackPlaying] = useState('');
+  const [trackPlaying, setTrackPlaying] = useState([]);
 
   useEffect(() => setPlay(true), [playlistUri]);
 
@@ -16,22 +16,17 @@ export default function Player({
     setTrackPlaying(playlistUri);
   }, [playlistUri]);
 
-  let newArray = [];
-  console.log(trackList.length);
-  console.log(playlistUri);
+  let songArray = [];
 
   for (let i = 0; i < trackList.length; i++) {
-    newArray.push(trackList[i].uri);
+    songArray.push(trackList[i].uri);
   }
-  console.log(newArray);
 
   if (!accessToken) return null;
 
-  const selectTrack = (trackUri) => {
-    console.log('select this track');
-    let newestArray = newArray.slice(trackUri);
-    console.log(newestArray);
-    // setTrackPlaying(newestArray); //reorder array slice beginning at chosen track and then put state variable in uris
+  const selectTrack = (trackNumber, trackUri) => {
+    let newSongArray = songArray.slice(trackNumber);
+    setTrackPlaying(newSongArray); //reorder array slice beginning at chosen track and then put state variable in uris
   };
 
   return (
@@ -42,7 +37,7 @@ export default function Player({
           if (!state.isPlaying) setPlay(false);
         }}
         play={play}
-        uris={trackPlaying ? [trackPlaying] : []}
+        uris={trackPlaying ? trackPlaying : []}
         // uris={playlistUri ? newArray : []}
         // uris={[newArray]}
       />
