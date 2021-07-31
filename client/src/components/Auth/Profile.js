@@ -33,7 +33,7 @@ const Profile = () => {
       <div className={classes.outer}>
         <div className={classes.header}>
           <img src={logo} alt="" width="100" height="100" />
-          <h1>Welcome {userService.user?.name}</h1>
+          <h1>Welcome {userService.user?.username}</h1>
         </div>
 
         {/* <div>

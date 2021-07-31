@@ -32,8 +32,13 @@ function Nav() {
             </Link>
             <div className="account-button">
               <DropdownButton className="dropdown" title="account">
-                <Dropdown.Item href="login">login/logout</Dropdown.Item>
-                <Dropdown.Item href="profile">profile</Dropdown.Item>
+                <Dropdown.Item>
+                  <Link to="/login">login/logout</Link>
+                </Dropdown.Item>
+
+                <Dropdown.Item>
+                  <Link to="/profile">profile</Link>
+                </Dropdown.Item>
               </DropdownButton>
             </div>
           </nav>

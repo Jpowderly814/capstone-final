@@ -1,8 +1,9 @@
 import Axios from 'axios';
+import React from 'react';
 
 import User from '../Domain/Entities/Types/User';
 
-class UserService {
+class UserService extends React.Component {
   _user = null; // potato - i could not get this to set values in login with the private setting - how to fix this?
 
   get user() {
