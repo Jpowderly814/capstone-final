@@ -1,5 +1,6 @@
 import React from 'react';
-// import './TrackList.css';
+import './TrackList.css';
+import Card from '../UI/Card';
 
 const TrackList = (props) => {
   return (
@@ -8,19 +9,22 @@ const TrackList = (props) => {
         return (
           <div key={index}>
             <div
-              className="d-flex m-2 align-items-center"
+              className="track-list"
               style={{ cursor: 'pointer' }}
               type="submit"
               onClick={() => props.selectTrack(index, name.uri)}
             >
-              <img
-                src={name.albumUrl}
-                alt=""
-                style={{ height: '64px', width: '64px' }}
-              />
-              <div className="ml-3">
-                <div>{name.title}</div>
-              </div>
+              <Card className="track-item">
+                <img
+                  className="track-image"
+                  src={name.albumUrl}
+                  alt=""
+                  style={{ height: '64px', width: '64px' }}
+                />
+                <div className="track-item-description">
+                  <h2>{name.title}</h2>
+                </div>
+              </Card>
             </div>
           </div>
         );
