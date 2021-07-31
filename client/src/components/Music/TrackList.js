@@ -1,17 +1,17 @@
 import React from 'react';
 // import './TrackList.css';
 
-const TrackList = (trackList) => {
-  console.log(trackList);
-
+const TrackList = (props) => {
   return (
     <div>
-      {trackList.trackList.map((name, index) => {
+      {props.trackList.map((name, index) => {
         return (
           <div key={index}>
             <div
               className="d-flex m-2 align-items-center"
               style={{ cursor: 'pointer' }}
+              type="submit"
+              onClick={() => props.selectTrack(index, name.uri)}
             >
               <img
                 src={name.albumUrl}

@@ -209,6 +209,15 @@ export default function Dashboard({ code }) {
                         onCancel={stopRatingHandler}
                       />
                     )}
+<<<<<<< HEAD
+=======
+                    {isRating && (
+                      <RatePlaylist
+                        playlist={playingPlaylist?.uri}
+                        onCancel={stopRatingHandler}
+                      />
+                    )}
+>>>>>>> develop
                   </div>
                 </div>
               )}
