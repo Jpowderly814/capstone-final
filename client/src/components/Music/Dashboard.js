@@ -199,9 +199,9 @@ export default function Dashboard({ code }) {
 
                   <div>
                     {!isRating && (
-                      <Button onClick={startRatingHandler}>
+                      <button onClick={startRatingHandler}>
                         Rate Playlist
-                      </Button>
+                      </button>
                     )}
                     {isRating && (
                       <RatePlaylist
@@ -209,6 +209,15 @@ export default function Dashboard({ code }) {
                         onCancel={stopRatingHandler}
                       />
                     )}
+<<<<<<< HEAD
+=======
+                    {isRating && (
+                      <RatePlaylist
+                        playlist={playingPlaylist?.uri}
+                        onCancel={stopRatingHandler}
+                      />
+                    )}
+>>>>>>> develop
                   </div>
                 </div>
               )}

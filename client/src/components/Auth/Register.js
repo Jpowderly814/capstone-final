@@ -1,19 +1,17 @@
 import './Login.css';
-import { useState } from 'react';
-import Axios from 'axios';
-//import { Link, Route } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import ErrorModal from '../UI/ErrorModal';
 import validator from 'validator';
+import { UserContext } from '../..';
 
 const Register = (props) => {
   const [emailReg, setEmailReg] = useState('');
   const [usernameReg, setUsernameReg] = useState('');
   const [passwordReg, setPasswordReg] = useState('');
   const [error, setError] = useState('');
+  const userService = useContext(UserContext);
 
-  const register = (event) => {
-    event.preventDefault();
-
+  const handleRegister = async () => {
     if (
       usernameReg.trim().length === 0 ||
       passwordReg.trim().length === 0 ||
@@ -34,13 +32,8 @@ const Register = (props) => {
       return;
     }
 
-    Axios.post('http://localhost:3001/login/register', {
-      username: usernameReg,
-      password: passwordReg,
-      email: emailReg,
-    }).then((response) => {
-      console.log(response);
-    });
+    await userService.register(usernameReg, passwordReg, emailReg);
+
     setEmailReg('');
     setUsernameReg('');
     setPasswordReg('');
@@ -111,7 +104,7 @@ const Register = (props) => {
             type="submit"
             className="login-btn"
             value="register"
-            onClick={register}
+            onClick={handleRegister}
           />
 
           <button className="login-btn" onClick={props.onCancel}>
