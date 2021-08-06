@@ -25,25 +25,14 @@ function Nav() {
       <Router>
         <div className="header">
           <nav>
-            <Link to="/">
-              <div className="home-link">
-                <h3>Home</h3>
-              </div>
-            </Link>
-            <div className="account-button">
-              <DropdownButton className="dropdown" title="account">
-                <Dropdown.Item>
-                  <Link to="/login">login/logout</Link>
-                </Dropdown.Item>
+            <Link to="/">Home</Link>
 
-                <Dropdown.Item>
-                  <Link to="/profile">profile</Link>
-                </Dropdown.Item>
-              </DropdownButton>
-            </div>
+            <Link to="/login">login/logout</Link>
+
+            <Link to="/profile">profile</Link>
           </nav>
         </div>
-        <Route path="/login" component={Login} exact />
+        <Route path="/login" component={Login} />
         <Route exact path="/">
           {isLoggedIn ? <Home /> : <Redirect to="/login" />}
         </Route>
