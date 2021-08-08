@@ -1,48 +1,54 @@
-import Axios from 'axios';
+import axios from 'axios';
 import React from 'react';
 
 class SpotifyService extends React.Component {
+  // _accessToken = null;
+  // _refreshToken = null;
+  // _expiresIn = null;
 
-    _accessToken = null;
-    _refreshToken = null;
-    _expiresIn = null;
-  
-    async connect(code) {
-      axios
-        .post('http://localhost:3001/connect', {
-          code,
-        })
-        .then((res) => {
-          this._accessToken = res.data.accessToken;
-          this._refreshToken = res.data.refreshToken;
-          this.expiresIn = res.data.expiresIn;
-          // window.history.pushState({}, null, '/');
-        })
-        .catch(() => {
-          window.location = '/';
-        });
-      }
-  
-    async refresh(refreshToken) {
-      if (!this._refreshToken || !this._expiresIn) return;
-      const interval = setInterval(() => {
-        axios
-          .post('http://localhost:3001/refresh', {
-            refreshToken,
-          })
-          .then((res) => {
-            setAccessToken(res.data.accessToken);
-            setExpiresIn(res.data.expiresIn);
-          })
-          .catch(() => {
-            window.location = '/';
-          });
-      }, (expiresIn - 60) * 1000);
-  
-      return () => clearInterval(interval);
-    }, [refreshToken, expiresIn]);
-  
-    return accessToken;
+  accessToken = localStorage.getItem('accessToken');
+  refreshToken = localStorage.getItem('refreshToken');
+  expiresIn = localStorage.getItem('expiresIn');
+
+  async connect(code) {
+    axios
+      .post('http://localhost:3001/connect', {
+        code,
+      })
+      .then((res) => {
+        // this._accessToken = res.data.accessToken; //store in local storage?
+        // this._refreshToken = res.data.refreshToken;
+        // this._expiresIn = res.data.expiresIn;
+        // window.history.pushState({}, null, '/');
+        console.log(res);
+
+        localStorage.setItem('accessToken', res.data.accessToken);
+        localStorage.setItem('tokenType', res.data.tokenType);
+        localStorage.setItem('expiresIn', res.data.expiresIn);
+      });
+    // .catch(() => {
+    //   window.location = '/';
+    // });
+  }
+
+  async refresh() {
+    if (!this.refreshToken || !this.expiresIn) return;
+    const refreshToken = localStorage.getItem('refreshToken');
+    axios
+      .post('http://localhost:3001/refresh', {
+        refreshToken,
+      })
+      .then((res) => {
+        localStorage.clear();
+        localStorage.setItem('accessToken', res.data.accessToken);
+        localStorage.setItem('tokenType', res.data.tokenType);
+        localStorage.setItem('expiresIn', res.data.expiresIn);
+      })
+      .catch(() => {
+        window.location = '/';
+      });
+
+    return localStorage.getItem('refreshToken');
   }
 }
 

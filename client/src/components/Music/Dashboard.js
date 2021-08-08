@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import useAuth from './UseAuth';
-import Player from './Player';
+import { useState, useEffect, useContext } from 'react';
 
+// import useAuth from './UseAuth';
+import Player from './Player';
+import { SpotifyContext } from '../..';
 import PlaylistSearchResult from './PlaylistSearchResult';
 import { Container, Form } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-node';
@@ -11,14 +12,21 @@ import RatePlaylist from './RatePlaylist';
 import Button from '../UI/Button';
 import axios from 'axios';
 import './Dashboard.css';
+import Connect from '../Main/Connect';
 
 const spotifyApi = new SpotifyWebApi({
   clientId: '8b945ef10ea24755b83ac50cede405a0',
 });
 
-export default function Dashboard({ code }) {
+export default function Dashboard() {
   console.log('nav');
-  const accessToken = useAuth(code);
+  // const accessToken = useAuth(code);
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  const spotifyService = useContext(SpotifyContext);
+
+  axios.defaults.withCredentials = true;
+
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [playingPlaylist, setPlayingPlaylist] = useState('');
@@ -31,6 +39,38 @@ export default function Dashboard({ code }) {
   const stopRatingHandler = () => {
     setIsRating(false);
   };
+
+  console.group('access', accessToken, 'refresh', refreshToken);
+
+  useEffect(() => {
+    console.log('use effect inside dashboard');
+    let code;
+    if (!accessToken && !refreshToken) {
+      console.log('needs to connect');
+      let popup = window.open(
+        'https://accounts.spotify.com/authorize?client_id=5cd4002b7b2647d4837327d4413300db&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state'
+      );
+      code = new URLSearchParams(window.location.search).get('code');
+      if (code) {
+        spotifyService.connect(code);
+      }
+    }
+  });
+  // useEffect(() => {
+  //   // if (!search) return setSearchResults([]);
+  //   if (!accessToken) {
+  //     let response = spotifyService.connect();
+  //     // if (response.data.message) {
+  //     //   console.log(response.data.message);
+  //     // }
+
+  //     if (response) {
+  //       console.log(response);
+  //     }
+  //   }
+
+  //   // console.log(user);
+  // });
 
   function choosePlaylist(playlist) {
     console.log(playlist);

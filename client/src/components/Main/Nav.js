@@ -14,8 +14,11 @@ import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 function Nav() {
   const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem('token') !== 'null'
+    localStorage.getItem('token') !== null ||
+      localStorage.getItem('token') !== 'null'
   );
+  console.log(isLoggedIn);
+  console.log(localStorage.getItem('accessToken'));
 
   // const isLoggedIn = false;
 
@@ -40,8 +43,6 @@ function Nav() {
         <Route exact path="/profile">
           {isLoggedIn ? <Profile /> : <Redirect to="/login" />}
         </Route>
-
-        {console.log(isLoggedIn)}
       </Router>
     </div>
   );

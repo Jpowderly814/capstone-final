@@ -5,9 +5,9 @@ import Connect from './Connect';
 import Dashboard from '../Music/Dashboard';
 import { UserContext } from '../..';
 
-const code = new URLSearchParams(window.location.search).get('code');
-console.log(localStorage.getItem('accessToken'));
-
+// const code = new URLSearchParams(window.location.search).get('code');
+console.log('home access Token', localStorage.getItem('accessToken'));
+const code = localStorage.getItem('accessToken');
 const AUTH_URL =
   'https://accounts.spotify.com/authorize?client_id=5cd4002b7b2647d4837327d4413300db&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state';
 
@@ -16,49 +16,50 @@ const AUTH_URL =
 // var url = `https://api.edamam.com/search?q=${query}&app_id=${YOUR_APP_ID}&app_key=${YOUR_APP_KEY}&health=${healthLabel}`;
 
 function Home() {
-  console.log(code);
+  console.log('code', code);
+  console.log('expiresIn', localStorage.getItem('expiresIn'));
   const userService = useContext(UserContext);
-  console.log(userService.user?.username);
+  console.log('user', userService.user?.username);
 
-  Axios.defaults.withCredentials = true;
+  // Axios.defaults.withCredentials = true;
 
-  const getReturnedParamsFromSpotifyAuth = (hash) => {
-    const stringAfterHashtag = hash.substring(1);
-    const paramsInUrl = stringAfterHashtag.split('&');
-    const paramsSplitUp = paramsInUrl.reduce((accumulater, currentValue) => {
-      console.log(currentValue);
-      const [key, value] = currentValue.split('=');
-      accumulater[key] = value;
-      return accumulater;
-    }, {});
+  // const getReturnedParamsFromSpotifyAuth = (hash) => {
+  //   const stringAfterHashtag = hash.substring(1);
+  //   const paramsInUrl = stringAfterHashtag.split('&');
+  //   const paramsSplitUp = paramsInUrl.reduce((accumulater, currentValue) => {
+  //     console.log(currentValue);
+  //     const [key, value] = currentValue.split('=');
+  //     accumulater[key] = value;
+  //     return accumulater;
+  //   }, {});
 
-    return paramsSplitUp;
-  };
+  //   return paramsSplitUp;
+  // };
 
-  useEffect(() => {
-    if (window.location.hash) {
-      const { access_token, expires_in, token_type } =
-        getReturnedParamsFromSpotifyAuth(window.location.hash);
+  // useEffect(() => {
+  //   if (window.location.hash) {
+  //     const { access_token, expires_in, token_type } =
+  //       getReturnedParamsFromSpotifyAuth(window.location.hash);
 
-      localStorage.clear();
+  //     localStorage.clear();
 
-      localStorage.setItem('accessToken', access_token);
-      localStorage.setItem('tokenType', token_type);
-      localStorage.setItem('expiresIn', expires_in);
-    }
-  }, []);
+  //     localStorage.setItem('accessToken', access_token);
+  //     localStorage.setItem('tokenType', token_type);
+  //     localStorage.setItem('expiresIn', expires_in);
+  //   }
+  // }, []);
 
   const connect = async () => {
     window.location = AUTH_URL;
+    if (window.location.hash) {
+      console.log(window.location.hash);
+    }
   };
 
   return (
     <div>
-      {code ? (
-        <Dashboard code={code} />
-      ) : (
-        <button onClick={connect}>connect</button>
-      )}
+      {/* {code ? <Dashboard /> : <button onClick={connect}>connect</button>} */}
+      <Dashboard />
     </div>
   );
 }

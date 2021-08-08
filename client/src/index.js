@@ -14,6 +14,7 @@ const SpotifyContext = React.createContext(null);
 ReactDOM.render(
   <React.StrictMode>
     {console.log('index renderer')}
+
     <UserContext.Provider value={userService}>
       <SpotifyContext.Provider value={spotifyService}>
         <App />
@@ -28,4 +29,4 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-export { UserContext };
+export { UserContext, SpotifyContext };
