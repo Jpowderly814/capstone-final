@@ -157,7 +157,7 @@ app.listen(3001, () => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/music/refresh', (req, res) => {
+app.post('/refresh', (req, res) => {
   const refreshToken = req.body.refreshToken;
   const spotifyApi = new SpotifyWebApi({
     redirectUri: process.env.REDIRECT_URI,
@@ -182,12 +182,13 @@ app.post('/music/refresh', (req, res) => {
 
 app.post('/connect', (req, res) => {
   const code = req.body.code;
+  console.log('spotify server', code);
   const spotifyApi = new SpotifyWebApi({
-    redirectUri: 'http://localhost:3000',
+    redirectUri: 'http://localhost:3000/connect',
     clientId: '5cd4002b7b2647d4837327d4413300db',
     clientSecret: '9b6fd50cb1e74819a99666a4c2f0c88f',
   });
-
+  console.log('you are here');
   spotifyApi
     .authorizationCodeGrant(code)
     .then((data) => {

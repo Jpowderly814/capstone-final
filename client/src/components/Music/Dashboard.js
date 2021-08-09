@@ -13,6 +13,7 @@ import Button from '../UI/Button';
 import axios from 'axios';
 import './Dashboard.css';
 import Connect from '../Main/Connect';
+import { Redirect } from 'react-router-dom';
 
 const spotifyApi = new SpotifyWebApi({
   clientId: '8b945ef10ea24755b83ac50cede405a0',
@@ -23,6 +24,7 @@ export default function Dashboard() {
   // const accessToken = useAuth(code);
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const expiresIn = localStorage.getItem('expiresIn');
   const spotifyService = useContext(SpotifyContext);
 
   axios.defaults.withCredentials = true;
@@ -32,6 +34,7 @@ export default function Dashboard() {
   const [playingPlaylist, setPlayingPlaylist] = useState('');
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [isRating, setIsRating] = useState('');
+  const [isConnected, setIsConnected] = useState(true);
 
   const startRatingHandler = () => {
     setIsRating(true);
@@ -40,22 +43,48 @@ export default function Dashboard() {
     setIsRating(false);
   };
 
-  console.group('access', accessToken, 'refresh', refreshToken);
+  console.log(
+    'access',
+    accessToken,
+    'refresh',
+    refreshToken,
+    'expiresIn',
+    expiresIn
+  );
 
-  useEffect(() => {
-    console.log('use effect inside dashboard');
-    let code;
-    if (!accessToken && !refreshToken) {
-      console.log('needs to connect');
-      let popup = window.open(
-        'https://accounts.spotify.com/authorize?client_id=5cd4002b7b2647d4837327d4413300db&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state'
-      );
-      code = new URLSearchParams(window.location.search).get('code');
-      if (code) {
-        spotifyService.connect(code);
-      }
-    }
-  });
+  // useEffect(() => {
+  //   if (!refreshToken || !expiresIn) return;
+
+  //   const interval = setInterval(() => {
+  //     spotifyService.refresh(refreshToken);
+
+  //     return () => clearInterval(interval);
+  //   }, [refreshToken, expiresIn]);
+  // });
+
+  // useEffect(() => {
+  //   //localStorage.clear();
+  //   let code;
+  //   console.log('use effect inside dashboard');
+  //   if (accessToken === 'undefined' || accessToken === null) {
+  //     console.log('needs to connect');
+  //     let popup = window.open(
+  //       'https://accounts.spotify.com/authorize?client_id=5cd4002b7b2647d4837327d4413300db&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state',
+  //       'Login with spotify',
+  //       'width=800,height=600'
+  //     );
+  //     code = new URLSearchParams(window.location.search).get('code');
+  //     console.log('dashboard', code);
+  //     //popup.close();
+  //     console.log(code);
+  //     // if (!code) {
+  //     //   return <Connect />;
+  //     // }
+  //     if (code) {
+  //       spotifyService.connect(code);
+  //     }
+  //   }
+  // });
   // useEffect(() => {
   //   // if (!search) return setSearchResults([]);
   //   if (!accessToken) {
@@ -185,6 +214,7 @@ export default function Dashboard() {
 
   return (
     <Container>
+      {!isConnected && <Redirect to="/connect" />}
       <div>
         <h2>Search Playlists</h2>
 

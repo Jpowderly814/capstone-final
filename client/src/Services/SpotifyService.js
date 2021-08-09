@@ -11,7 +11,7 @@ class SpotifyService extends React.Component {
   expiresIn = localStorage.getItem('expiresIn');
 
   async connect(code) {
-    axios
+    return axios
       .post('http://localhost:3001/connect', {
         code,
       })
@@ -20,33 +20,34 @@ class SpotifyService extends React.Component {
         // this._refreshToken = res.data.refreshToken;
         // this._expiresIn = res.data.expiresIn;
         // window.history.pushState({}, null, '/');
-        console.log(res);
+        console.log('response', res);
 
         localStorage.setItem('accessToken', res.data.accessToken);
-        localStorage.setItem('tokenType', res.data.tokenType);
+        localStorage.setItem('refreshToken', res.data.refreshToken);
+        // localStorage.setItem('tokenType', res.data.tokenType);
         localStorage.setItem('expiresIn', res.data.expiresIn);
+        return true;
       });
     // .catch(() => {
-    //   window.location = '/';
+    //   return false;
     // });
   }
 
-  async refresh() {
-    if (!this.refreshToken || !this.expiresIn) return;
-    const refreshToken = localStorage.getItem('refreshToken');
+  async refresh(refreshToken) {
+    if (!refreshToken) return;
+
     axios
       .post('http://localhost:3001/refresh', {
         refreshToken,
       })
       .then((res) => {
-        localStorage.clear();
+        // localStorage.clear();
         localStorage.setItem('accessToken', res.data.accessToken);
-        localStorage.setItem('tokenType', res.data.tokenType);
         localStorage.setItem('expiresIn', res.data.expiresIn);
-      })
-      .catch(() => {
-        window.location = '/';
       });
+    // .catch(() => {
+    //   window.location = '/';
+    // });
 
     return localStorage.getItem('refreshToken');
   }

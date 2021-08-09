@@ -13,7 +13,8 @@ const SpotifyContext = React.createContext(null);
 
 ReactDOM.render(
   <React.StrictMode>
-    {console.log('index renderer')}
+    {/* {localStorage.clear()} */}
+    {/* {console.log('index renderer')} */}
 
     <UserContext.Provider value={userService}>
       <SpotifyContext.Provider value={spotifyService}>

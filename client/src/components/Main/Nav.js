@@ -8,6 +8,7 @@ import {
 import Login from '../Auth/Login';
 import Home from './Home';
 import Profile from '../Auth/Profile';
+import Connect from '../Main/Connect';
 import './Nav.css';
 
 import { DropdownButton, Dropdown } from 'react-bootstrap';
@@ -33,9 +34,11 @@ function Nav() {
             <Link to="/login">login/logout</Link>
 
             <Link to="/profile">profile</Link>
+            <Link to="/connect">connect</Link>
           </nav>
         </div>
         <Route path="/login" component={Login} />
+        <Route path="/connect" component={Connect} />
         <Route exact path="/">
           {isLoggedIn ? <Home /> : <Redirect to="/login" />}
         </Route>

@@ -51,8 +51,8 @@ class UserService extends React.Component {
       if (response.data.message) {
         return response;
       } else {
-        localStorage.setItem('token', 'null');
-        localStorage.setItem('user', 'null');
+        localStorage.setItem('token', null);
+        localStorage.setItem('user', null);
         console.log(localStorage.getItem('token'));
         console.log('local storage user', localStorage.getItem('user'));
         return response;
