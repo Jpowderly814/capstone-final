@@ -35,7 +35,7 @@ class SpotifyService extends React.Component {
 
   async refresh(refreshToken) {
     if (!refreshToken) return;
-
+    console.log('you are in refresh');
     axios
       .post('http://localhost:3001/refresh', {
         refreshToken,

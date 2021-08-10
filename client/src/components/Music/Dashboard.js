@@ -24,6 +24,8 @@ export default function Dashboard() {
   // const accessToken = useAuth(code);
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  // const refreshToken =
+  //   'AQCtRHREjkFe82tzui_Xso7t9qmsP0XHnZxGipOWcfwjEnS925XnHP2rgZGu08PgfVrgVlNpMLZPTadQnUfXDwkinsumaKEYH_TQ_LccNaN9bWx4aCX0qHgrFHFzO8FTbS4';
   const expiresIn = localStorage.getItem('expiresIn');
   const spotifyService = useContext(SpotifyContext);
 
@@ -53,13 +55,12 @@ export default function Dashboard() {
   );
 
   // useEffect(() => {
-  //   if (!refreshToken || !expiresIn) return;
+  //   console.log('before');
+  //   if (!refreshToken) return;
+  //   console.log('after');
+  //   spotifyService.refresh(refreshToken);
 
-  //   const interval = setInterval(() => {
-  //     spotifyService.refresh(refreshToken);
-
-  //     return () => clearInterval(interval);
-  //   }, [refreshToken, expiresIn]);
+  //   // return () => clearInterval(interval);
   // });
 
   // useEffect(() => {
@@ -269,9 +270,9 @@ export default function Dashboard() {
 
                   <div>
                     {!isRating && (
-                      <button onClick={startRatingHandler}>
+                      <Button onClick={startRatingHandler}>
                         Rate Playlist
-                      </button>
+                      </Button>
                     )}
                     {isRating && (
                       <RatePlaylist
