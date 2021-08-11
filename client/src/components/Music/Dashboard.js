@@ -22,12 +22,22 @@ const spotifyApi = new SpotifyWebApi({
 export default function Dashboard() {
   console.log('nav');
   // const accessToken = useAuth(code);
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
-  // const refreshToken =
-  //   'AQCtRHREjkFe82tzui_Xso7t9qmsP0XHnZxGipOWcfwjEnS925XnHP2rgZGu08PgfVrgVlNpMLZPTadQnUfXDwkinsumaKEYH_TQ_LccNaN9bWx4aCX0qHgrFHFzO8FTbS4';
-  const expiresIn = localStorage.getItem('expiresIn');
-  const spotifyService = useContext(SpotifyContext);
+
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem('accessToken')
+  );
+  const [refreshToken, setRefreshToken] = useState(
+    localStorage.getItem('refreshToken')
+  );
+  const [expiresIn, setExpiresIn] = useState(localStorage.getItem('expiresIn'));
+
+  // const accessToken = localStorage.getItem('accessToken');
+  // const refreshToken = localStorage.getItem('refreshToken');
+  // // const refreshToken =
+  // //   'AQCtRHREjkFe82tzui_Xso7t9qmsP0XHnZxGipOWcfwjEnS925XnHP2rgZGu08PgfVrgVlNpMLZPTadQnUfXDwkinsumaKEYH_TQ_LccNaN9bWx4aCX0qHgrFHFzO8FTbS4';
+
+  // const expiresIn = localStorage.getItem('expiresIn');
+  // const spotifyService = useContext(SpotifyContext);
 
   axios.defaults.withCredentials = true;
 
@@ -54,14 +64,24 @@ export default function Dashboard() {
     expiresIn
   );
 
-  // useEffect(() => {
-  //   console.log('before');
-  //   if (!refreshToken) return;
-  //   console.log('after');
-  //   spotifyService.refresh(refreshToken);
+  useEffect(() => {
+    if (!refreshToken || !expiresIn) return;
+    const interval = setInterval(() => {
+      axios
+        .post('http://localhost:3001/refresh', {
+          refreshToken,
+        })
+        .then((res) => {
+          setAccessToken(res.data.accessToken);
+          setExpiresIn(res.data.expiresIn);
+        })
+        .catch(() => {
+          window.location = '/';
+        });
+    }, (expiresIn - 60) * 1000);
 
-  //   // return () => clearInterval(interval);
-  // });
+    return () => clearInterval(interval);
+  }, [refreshToken, expiresIn]);
 
   // useEffect(() => {
   //   //localStorage.clear();

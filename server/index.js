@@ -83,10 +83,10 @@ const verifyJWT = (req, res, next) => {
   }
 };
 
-app.get('/isUserAuth', verifyJWT, (req, res) => {
-  console.log(res);
-  res.send('You are authenticated');
-});
+// app.get('/isUserAuth', verifyJWT, (req, res) => {
+//   console.log(res);
+//   res.send('You are authenticated');
+// });
 
 app.get('/login', (req, res) => {
   if (req.session.user) {
