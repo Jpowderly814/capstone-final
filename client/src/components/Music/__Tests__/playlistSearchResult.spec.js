@@ -1,23 +1,44 @@
 import React from 'react';
-// import renderer from 'react-test-renderer';
-// import shallow from 'enzyme-adapter-react-16';
 import PlaylistSearchResult from '../PlaylistSearchResult';
 import { render, screen, fireEvent } from '@testing-library/react';
 
-const onClick = jest.fn();
+const mockChoosePlaylist = jest.fn();
 
-const props = {
-  onClick,
-};
+describe('Playlist search result', () => {
+  const playlist = { albumUrl: '123456', title: 'A playlist' };
 
-describe('Tracklist', () => {
-  it('clicks the button', () => {
-    render(<PlaylistSearchResult />);
-    const button = screen.getAllByRole(Image);
+  it('renders playlist title as a text', () => {
+    // Arrange
+    render(
+      <PlaylistSearchResult
+        choosePlaylist={mockChoosePlaylist}
+        playlist={playlist}
+      />
+    );
+
+    // Act
+    // ... nothing
+
+    // Assert
+    const playlistTitle = screen.getByText('A playlist');
+    expect(playlistTitle).toBeInTheDocument();
+  });
+
+  it('calls choose playlist with div tag is clicked', () => {
+    // Arrange
+    const { getByTestId } = render(
+      <PlaylistSearchResult
+        choosePlaylist={mockChoosePlaylist}
+        playlist={playlist}
+      />
+    );
+
+    // Act
+    const button = getByTestId('onclick');
 
     fireEvent.click(button);
 
-    // Test to make sure prop functions were called via simulating the button click
-    expect(props.onClick).toHaveBeenCalled(); //this isnt even in this branch
+    // Assert
+    expect(mockChoosePlaylist).toHaveBeenCalledWith(playlist);
   });
 });
