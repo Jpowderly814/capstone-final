@@ -8,6 +8,7 @@ export default function PlaylistSearchResult({ playlist, choosePlaylist }) {
   return (
     <div
       className="d-flex m-2 align-items-center"
+      data-testid="onclick"
       style={{ cursor: 'pointer' }}
       onClick={handlePlay}
     >

@@ -4,9 +4,9 @@ import UserService from './UserService';
 import axios from 'axios';
 
 jest.mock('axios', () => {
-  // return {
-  //   post: jest.fn(),
-  // };
+  return {
+    post: jest.fn(),
+  };
 });
 
 afterEach(() => {
@@ -18,7 +18,7 @@ describe('User Service', () => {
   const username = 'username123';
   const password = 'password123';
 
-  it.only('should call axios with login', async () => {
+  it('should call axios with login', async () => {
     userService.login(username, password);
     expect(axios.post).toBeCalledTimes(1);
     expect(axios.post).toBeCalledWith('http://localhost:3001/login', {
