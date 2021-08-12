@@ -44,6 +44,7 @@ function Login() {
   const handleLogout = async () => {
     // await userService.logout();
     let response = await userService.logout();
+    console.log('logout', userService?.user);
     if (response.data.message) {
       setError({
         title: 'Invalid',
@@ -67,6 +68,7 @@ function Login() {
           onConfirm={errorHandler}
         />
       )}
+
       <div className="text-center">
         <h2 className="login-register-header">Sign in</h2>
       </div>

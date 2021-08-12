@@ -3,8 +3,11 @@ import React from 'react';
 // import shallow from 'enzyme-adapter-react-16';
 import TrackList from '../TrackList';
 
+<<<<<<< HEAD
 import { render, screen, fireEvent } from '@testing-library/react';
 
+=======
+>>>>>>> origin/store-code
 const onClick = jest.fn();
 
 const props = {
@@ -12,6 +15,7 @@ const props = {
 };
 
 describe('Tracklist', () => {
+<<<<<<< HEAD
   //let wrapper;
 
   //beforeEach(() => (wrapper = shallow(<TrackList {...props} />)));
@@ -59,5 +63,17 @@ describe('Tracklist', () => {
     );
 
     expect(listItemElements).not.toHaveLength(0);
+=======
+  let wrapper;
+
+  beforeEach(() => (wrapper = shallow(<TrackList {...props} />)));
+
+  it('renders correctly', () => {
+    // Find the button and call the onClick handler
+    wrapper.find('.track-list').simulate('click');
+
+    // Test to make sure prop functions were called via simulating the button click
+    expect(props.selectTrack).toHaveBeenCalled();
+>>>>>>> origin/store-code
   });
 });
