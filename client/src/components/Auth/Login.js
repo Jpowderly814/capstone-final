@@ -1,6 +1,6 @@
 import './Login.css';
 import Register from './Register';
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../..';
 import Axios from 'axios';
 import ErrorModal from '../UI/ErrorModal';
@@ -27,8 +27,6 @@ function Login() {
         message: response.data.message,
       });
     }
-    // console.log(user);
-    console.log(userService.user);
     setLoggedIn(true);
     setUsername('');
     setPassword('');
@@ -44,7 +42,6 @@ function Login() {
   const handleLogout = async () => {
     // await userService.logout();
     let response = await userService.logout();
-    console.log('logout', userService?.user);
     if (response.data.message) {
       setError({
         title: 'Invalid',
@@ -68,7 +65,6 @@ function Login() {
           onConfirm={errorHandler}
         />
       )}
-
       <div className="text-center">
         <h2 className="login-register-header">Sign in</h2>
       </div>
@@ -103,12 +99,9 @@ function Login() {
         )}
 
         {localStorage.getItem('token') !== 'null' && (
-          <div>
-            <p> You are logged in {userService.user?.username}</p>
-            <button className="login-btn" onClick={handleLogout}>
-              logout
-            </button>
-          </div>
+          <button className="login-btn" onClick={handleLogout}>
+            logout
+          </button>
         )}
         {localStorage.getItem('token') === 'null' && (
           <button className="login-btn" onClick={handleLogin}>
@@ -116,16 +109,14 @@ function Login() {
           </button>
         )}
       </div>
-      {localStorage.getItem('token') === 'null' && (
-        <div>
-          {!isRegistering && (
-            <button className="login-btn" onClick={startRegistrationHandler}>
-              register
-            </button>
-          )}
-          {isRegistering && <Register onCancel={stopRegistrationHandler} />}
-        </div>
-      )}
+      <div>
+        {!isRegistering && (
+          <button className="login-btn" onClick={startRegistrationHandler}>
+            register
+          </button>
+        )}
+        {isRegistering && <Register onCancel={stopRegistrationHandler} />}
+      </div>
     </div>
   );
 }

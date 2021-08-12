@@ -2,33 +2,19 @@ import { useState, useEffect } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import TrackList from './TrackList';
 
-export default function Player({
-  accessToken,
-  trackUri: playlistUri,
-  trackList,
-}) {
+export default function Player({ accessToken, trackUri, trackList }) {
   const [play, setPlay] = useState(false);
-  const [trackPlaying, setTrackPlaying] = useState([]);
 
-  useEffect(() => setPlay(true), [playlistUri]);
+  useEffect(() => setPlay(true), [trackUri]);
 
-  useEffect(() => {
-    setTrackPlaying(playlistUri);
-  }, [playlistUri]);
-
-  let songArray = [];
+  let newArray = [];
+  console.log(trackList.length);
 
   for (let i = 0; i < trackList.length; i++) {
-    songArray.push(trackList[i].uri);
+    newArray.push(trackList[i].uri);
   }
 
   if (!accessToken) return null;
-
-  const selectTrack = (trackNumber, trackUri) => {
-    let newSongArray = songArray.slice(trackNumber);
-    setTrackPlaying(newSongArray); //reorder array slice beginning at chosen track and then put state variable in uris
-  };
-
   return (
     <div>
       <SpotifyPlayer
@@ -37,11 +23,9 @@ export default function Player({
           if (!state.isPlaying) setPlay(false);
         }}
         play={play}
-        uris={trackPlaying ? trackPlaying : []}
-        // uris={playlistUri ? newArray : []}
-        // uris={[newArray]}
+        uris={trackUri ? [trackUri] : []}
       />
-      <TrackList trackList={trackList} selectTrack={selectTrack} />
+      <TrackList trackList={trackList} />
     </div>
   );
 }
