@@ -22,12 +22,8 @@ export default function PlaylistSearchResult({ playlist, choosePlaylist }) {
     //       <div>{playlist.title}</div>
     //     </div> */}
     <div
-<<<<<<< HEAD
-      className="d-flex m-2 align-items-center"
       data-testid="onclick"
-=======
       className="playlist-list"
->>>>>>> origin/store-code
       style={{ cursor: 'pointer' }}
       type="submit"
       onClick={handlePlay}
