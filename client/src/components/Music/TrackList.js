@@ -1,12 +1,12 @@
 import React from 'react';
 // import './TrackList.css';
 
-const TrackList = (trackList) => {
-  console.log(trackList);
+const TrackList = (props) => {
+  console.log(props);
 
   return (
     <div>
-      {trackList.trackList.map((name, index) => {
+      {props.trackList.map((name, index) => {
         return (
           <div key={index}>
             <div
