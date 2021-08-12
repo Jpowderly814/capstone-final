@@ -17,8 +17,6 @@ const AverageRating = (props) => {
         let a = parseInt(response.data[i].rating);
         total = total + a;
       }
-      console.log(total);
-      console.log(response.data.length);
       average = total / response.data.length;
       console.log(average);
       setAverage(average);

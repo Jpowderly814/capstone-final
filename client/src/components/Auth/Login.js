@@ -1,7 +1,7 @@
 import './Login.css';
 import Register from './Register';
 import { useState, useContext } from 'react';
-import { UserContext } from '../../App';
+import { UserContext } from '../..';
 import Axios from 'axios';
 import ErrorModal from '../UI/ErrorModal';
 
@@ -102,8 +102,7 @@ function Login() {
 
         {localStorage.getItem('token') !== 'null' && (
           <div>
-            {console.log(userService.user?.name)}
-            <p> You are logged in {userService._user?.name}</p>
+            <p> You are logged in {userService.user?.username}</p>
             <button className="login-btn" onClick={handleLogout}>
               logout
             </button>

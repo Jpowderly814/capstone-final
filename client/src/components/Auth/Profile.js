@@ -2,20 +2,20 @@ import { useState, useEffect, useContext } from 'react';
 import Card from '../UI/Card';
 import classes from './Profile.module.css';
 import axios from 'axios';
-import { UserContext } from '../../App';
+import { UserContext } from '../..';
 import logo from './music-notes.png';
 
 const Profile = () => {
   const userId = localStorage.getItem('user');
   const [favoritesList, setFavoritesList] = useState([]);
   const userService = useContext(UserContext);
-  console.log(userService._user?.name);
+  console.log('username:', userService._user?.username);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/favorites/${userId}`).then((response) => {
       setFavoritesList(response.data);
     });
-  });
+  }, [userId]);
 
   const removeFavorite = (id) => {
     axios.delete(`http://localhost:3001/favorites/delete/${id}`).then(() => {
@@ -33,7 +33,7 @@ const Profile = () => {
       <div className={classes.outer}>
         <div className={classes.header}>
           <img src={logo} alt="" width="100" height="100" />
-          <h1>Welcome {userService.user?.name}</h1>
+          <h1>Welcome {userService.user?.username}</h1>
         </div>
 
         {/* <div>

@@ -11,7 +11,6 @@ const RatePlaylist = (props) => {
   /* const startRatingHandler = () => {
     setIsRating(true);
   };
-
   const stopRatingHandler = () => {
     setIsRating(false);
   }; */

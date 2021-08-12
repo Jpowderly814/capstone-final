@@ -2,7 +2,9 @@ import React from 'react';
 // import './TrackList.css';
 
 const TrackList = (props) => {
+
   console.log(props);
+
 
   return (
     <div>
@@ -12,6 +14,8 @@ const TrackList = (props) => {
             <div
               className="d-flex m-2 align-items-center"
               style={{ cursor: 'pointer' }}
+              type="submit"
+              onClick={() => props.selectTrack(index, name.uri)}
             >
               <img
                 src={name.albumUrl}

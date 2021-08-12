@@ -1,8 +1,9 @@
 import Axios from 'axios';
+import React from 'react';
 
 import User from '../Domain/Entities/Types/User';
 
-class UserService {
+class UserService extends React.Component {
   _user = null; // potato - i could not get this to set values in login with the private setting - how to fix this?
 
   get user() {
@@ -27,22 +28,22 @@ class UserService {
     return Axios.post('http://localhost:3001/login', {
       username: username,
       password: password,
+    }).then((response) => {
+      if (response.data.message) {
+        return response;
+      } else {
+        console.log('login response', response.data.result[0]);
+        this._user = new User(response.data.result[0].username);
+        console.log(this._user);
+        // console.log(this.person);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('expiresIn', response.data.token.expires);
+        localStorage.setItem('user', response.data.result[0].id);
+        // console.log(localStorage.getItem('token'));
+        console.log(localStorage.getItem('user'));
+        return response;
+      }
     });
-    // .then((response) => {
-    //   if (response.data.message) {
-    //     return response;
-    //   } else {
-    //     console.log(response.data.result[0]);
-    //     this._user = new User(response.data.result[0].username);
-    //     // console.log(this.person);
-    //     localStorage.setItem('token', response.data.token);
-    //     localStorage.setItem('expiresIn', response.data.token.expires);
-    //     localStorage.setItem('user', response.data.result[0].id);
-    //     // console.log(localStorage.getItem('token'));
-    //     console.log(localStorage.getItem('user'));
-    //     return response;
-    //   }
-    // });
   }
 
   async logout() {
@@ -53,7 +54,7 @@ class UserService {
         localStorage.setItem('token', 'null');
         localStorage.setItem('user', 'null');
         console.log(localStorage.getItem('token'));
-        console.log(localStorage.getItem('user'));
+        console.log('local storage user', localStorage.getItem('user'));
         return response;
       }
     });
