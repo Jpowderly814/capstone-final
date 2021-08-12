@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import './RatePlaylist.css';
 import axios from 'axios';
+import Button from '../UI/Button';
 //import StarRating from 'react-star-rating'
 
 const RatePlaylist = (props) => {
@@ -11,7 +12,6 @@ const RatePlaylist = (props) => {
   /* const startRatingHandler = () => {
     setIsRating(true);
   };
-
   const stopRatingHandler = () => {
     setIsRating(false);
   }; */
@@ -88,6 +88,7 @@ const RatePlaylist = (props) => {
       .then((response) => {
         console.log('Success!');
       });
+    props.onCancel();
   };
 
   return (
@@ -103,6 +104,7 @@ const RatePlaylist = (props) => {
           />
         );
       })}
+      <Button onClick={props.onCancel}>cancel</Button>
     </div>
   );
 };

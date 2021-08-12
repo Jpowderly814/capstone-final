@@ -1,28 +1,126 @@
-import { useState, useEffect } from 'react';
-import useAuth from './UseAuth';
-import Player from './Player';
+import { useState, useEffect, useContext } from 'react';
 
+// import useAuth from './UseAuth';
+import Player from './Player';
+import { SpotifyContext } from '../..';
 import PlaylistSearchResult from './PlaylistSearchResult';
 import { Container, Form } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-node';
-
+import AverageRating from './AverageRating';
 import Card from '../UI/Card';
 import RatePlaylist from './RatePlaylist';
 import Button from '../UI/Button';
 import axios from 'axios';
 import './Dashboard.css';
+import Connect from '../Main/Connect';
+import { Redirect } from 'react-router-dom';
 
 const spotifyApi = new SpotifyWebApi({
   clientId: '8b945ef10ea24755b83ac50cede405a0',
 });
 
-export default function Dashboard({ code }) {
+export default function Dashboard() {
   console.log('nav');
-  const accessToken = useAuth(code);
+  // const accessToken = useAuth(code);
+
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem('accessToken')
+  );
+  const [refreshToken, setRefreshToken] = useState(
+    localStorage.getItem('refreshToken')
+  );
+  const [expiresIn, setExpiresIn] = useState(localStorage.getItem('expiresIn'));
+
+  // const accessToken = localStorage.getItem('accessToken');
+  // const refreshToken = localStorage.getItem('refreshToken');
+  // // const refreshToken =
+  // //   'AQCtRHREjkFe82tzui_Xso7t9qmsP0XHnZxGipOWcfwjEnS925XnHP2rgZGu08PgfVrgVlNpMLZPTadQnUfXDwkinsumaKEYH_TQ_LccNaN9bWx4aCX0qHgrFHFzO8FTbS4';
+
+  // const expiresIn = localStorage.getItem('expiresIn');
+  // const spotifyService = useContext(SpotifyContext);
+
+  axios.defaults.withCredentials = true;
+
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [playingPlaylist, setPlayingPlaylist] = useState('');
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [isRating, setIsRating] = useState('');
+  const [isConnected, setIsConnected] = useState(true);
+
+  const startRatingHandler = () => {
+    setIsRating(true);
+  };
+  const stopRatingHandler = () => {
+    setIsRating(false);
+  };
+
+  console.log(
+    'access',
+    accessToken,
+    'refresh',
+    refreshToken,
+    'expiresIn',
+    expiresIn
+  );
+
+  useEffect(() => {
+    if (!refreshToken || !expiresIn) return;
+    const interval = setInterval(() => {
+      axios
+        .post('http://localhost:3001/refresh', {
+          refreshToken,
+        })
+        .then((res) => {
+          setAccessToken(res.data.accessToken);
+          setExpiresIn(res.data.expiresIn);
+        })
+        .catch(() => {
+          window.location = '/';
+        });
+    }, (expiresIn - 60) * 1000);
+
+    return () => clearInterval(interval);
+  }, [refreshToken, expiresIn]);
+
+  // useEffect(() => {
+  //   //localStorage.clear();
+  //   let code;
+  //   console.log('use effect inside dashboard');
+  //   if (accessToken === 'undefined' || accessToken === null) {
+  //     console.log('needs to connect');
+  //     let popup = window.open(
+  //       'https://accounts.spotify.com/authorize?client_id=5cd4002b7b2647d4837327d4413300db&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state',
+  //       'Login with spotify',
+  //       'width=800,height=600'
+  //     );
+  //     code = new URLSearchParams(window.location.search).get('code');
+  //     console.log('dashboard', code);
+  //     //popup.close();
+  //     console.log(code);
+  //     // if (!code) {
+  //     //   return <Connect />;
+  //     // }
+  //     if (code) {
+  //       spotifyService.connect(code);
+  //     }
+  //   }
+  // });
+  // useEffect(() => {
+  //   // if (!search) return setSearchResults([]);
+  //   if (!accessToken) {
+  //     let response = spotifyService.connect();
+  //     // if (response.data.message) {
+  //     //   console.log(response.data.message);
+  //     // }
+
+  //     if (response) {
+  //       console.log(response);
+  //     }
+  //   }
+
+  //   // console.log(user);
+  // });
 
   function choosePlaylist(playlist) {
     console.log(playlist);
@@ -137,6 +235,7 @@ export default function Dashboard({ code }) {
 
   return (
     <Container>
+      {!isConnected && <Redirect to="/connect" />}
       <div>
         <h2>Search Playlists</h2>
 
@@ -184,11 +283,25 @@ export default function Dashboard({ code }) {
                 <div className="card-sub">
                   <div className="header-title">
                     {playingPlaylist?.title}
-                    <RatePlaylist playlist={playingPlaylist?.uri} />
+                    <AverageRating playlist={playingPlaylist?.uri} />
                   </div>
 
                   <Button onClick={savePlaylist}>Save Playlist</Button>
-                  <Button onClick={savePlaylist}>Rate</Button>
+
+                  <div>
+                    {!isRating && (
+                      <Button onClick={startRatingHandler}>
+                        Rate Playlist
+                      </Button>
+                    )}
+
+                    {isRating && (
+                      <RatePlaylist
+                        playlist={playingPlaylist?.uri}
+                        onCancel={stopRatingHandler}
+                      />
+                    )}
+                  </div>
                 </div>
               )}
             </Card>

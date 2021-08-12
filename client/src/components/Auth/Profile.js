@@ -3,68 +3,77 @@ import Card from '../UI/Card';
 import classes from './Profile.module.css';
 import axios from 'axios';
 import { UserContext } from '../..';
+import logo from './music-notes.png';
 
 const Profile = () => {
-  //  const userService = useContext(UserContext);
-
-  //  console.log(userService.login());
-
   const userId = localStorage.getItem('user');
   const [favoritesList, setFavoritesList] = useState([]);
-  const [isEditing, setIsEditing] = useState(true);
+  const userService = useContext(UserContext);
+  console.log('username:', userService._user?.username);
 
-  const getFavorites = (userId) => {
-    if (isEditing === true) {
-      console.log('im here');
-      axios
-        .get(`http://localhost:3001/favorites/${userId}`)
-        .then((response) => {
-          setFavoritesList(response.data);
-          setIsEditing(false);
-        });
-    }
-    if (favoritesList.length === 0) {
-      return;
-    }
-  };
+  useEffect(() => {
+    axios.get(`http://localhost:3001/favorites/${userId}`).then((response) => {
+      setFavoritesList(response.data);
+    });
+  }, [userId]);
 
   const removeFavorite = (id) => {
-    axios
-      .delete(`http://localhost:3001/favorites/delete/${id}`)
-      .then((response) => {
-        console.log(id);
-        console.log('Success!');
-        setFavoritesList(
-          favoritesList.filter((val) => {
-            return val.id !== id;
-          })
-        );
-      });
+    axios.delete(`http://localhost:3001/favorites/delete/${id}`).then(() => {
+      console.log('Success!');
+      setFavoritesList(
+        favoritesList.filter((val) => {
+          return val.id !== id;
+        })
+      );
+    });
   };
 
   return (
     <div className={classes.wrapper}>
-      <Card className={classes.users}>
-        <h1>Favorite Playlists</h1>
-        {getFavorites(userId)}
-        {favoritesList.length === 0 && <p>None</p>}
+      <div className={classes.outer}>
+        <div className={classes.header}>
+          <img src={logo} alt="" width="100" height="100" />
+          <h1>Welcome {userService.user?.username}</h1>
+        </div>
 
-        <ul>
-          {favoritesList.map((favorite) => (
-            <li key={favorite.id}>
-              {favorite.name}
-              <button
-                className={classes.button}
-                onClick={() => {
-                  removeFavorite(favorite.id);
-                }}
-              >
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
-      </Card>
+        {/* <div>
+          Icons made by{' '}
+          <a
+            href="https://www.flaticon.com/authors/icongeek26"
+            title="Icongeek26"
+          >
+            Icongeek26
+          </a>{' '}
+          from{' '}
+          <a href="https://www.flaticon.com/" title="Flaticon">
+            www.flaticon.com
+          </a>
+        </div> */}
+
+        <Card className={classes.users}>
+          <h1>Favorite Playlists</h1>
+
+          {favoritesList.length === 0 && (
+            <p>You have not saved any favorites yet!</p>
+          )}
+
+          <ul>
+            {favoritesList.map((favorite) => (
+              <li key={favorite.id}>
+                {favorite.name}
+                <button
+                  className={classes.button}
+                  onClick={() => {
+                    removeFavorite(favorite.id);
+                  }}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </div>
     </div>
   );
 };
