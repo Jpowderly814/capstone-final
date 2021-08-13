@@ -1,34 +1,26 @@
 import React from 'react';
-import './Tracklist.css';
-import Card from '../UI/Card';
+// import './TrackList.css';
 
-const TrackList = (props) => {
-
-  console.log(props);
-
+const TrackList = (trackList) => {
+  console.log(trackList);
 
   return (
     <div>
-      {props.trackList.map((name, index) => {
+      {trackList.trackList.map((name, index) => {
         return (
           <div key={index}>
             <div
-              className="track-list"
+              className="d-flex m-2 align-items-center"
               style={{ cursor: 'pointer' }}
-              type="submit"
-              onClick={() => props.selectTrack(index, name.uri)}
             >
-              <Card className="track-item">
-                <img
-                  className="track-image"
-                  src={name.albumUrl}
-                  alt=""
-                  style={{ height: '64px', width: '64px' }}
-                />
-                <div className="track-item-description">
-                  <h2>{name.title}</h2>
-                </div>
-              </Card>
+              <img
+                src={name.albumUrl}
+                alt=""
+                style={{ height: '64px', width: '64px' }}
+              />
+              <div className="ml-3">
+                <div>{name.title}</div>
+              </div>
             </div>
           </div>
         );
