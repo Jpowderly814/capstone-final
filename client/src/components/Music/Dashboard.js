@@ -299,7 +299,7 @@ export default function Dashboard() {
   return (
     <Container>
       {!isConnected && <Redirect to="/connect" />}
-      <div>
+      <div className="title-bar">
         <h2>Search Playlists</h2>
         {/* Move this into another componenent */}
 

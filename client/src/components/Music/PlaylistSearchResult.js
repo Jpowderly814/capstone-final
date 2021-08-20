@@ -21,7 +21,7 @@ export default function PlaylistSearchResult({ playlist, choosePlaylist }) {
           style={{ height: '64px', width: '64px' }}
         />
         <div className="playlist-item-description">
-          <div>{playlist.title}</div>
+          <h2>{playlist.title}</h2>
         </div>
       </div>
     </div>

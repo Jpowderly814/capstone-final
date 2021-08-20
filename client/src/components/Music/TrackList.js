@@ -17,7 +17,6 @@ const TrackList = (props) => {
               onClick={() => props.selectTrack(index, name.uri)}
             >
               <Card className="track-item">
-                {console.log(name.albumUrl)}
                 <img
                   className="track-image"
                   src={name.albumUrl}
