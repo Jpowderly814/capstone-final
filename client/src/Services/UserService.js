@@ -36,11 +36,12 @@ class UserService extends React.Component {
         this._user = new User(response.data.result[0].username);
         console.log(this._user);
         // console.log(this.person);
-        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userToken', response.data.token);
+        localStorage.setItem('username', response.data.result[0].username);
         localStorage.setItem('expiresIn', response.data.token.expires);
-        localStorage.setItem('user', response.data.result[0].id);
+        localStorage.setItem('userId', response.data.result[0].id);
         // console.log(localStorage.getItem('token'));
-        console.log(localStorage.getItem('user'));
+        console.log(localStorage.getItem('username'));
         return response;
       }
     });
@@ -51,8 +52,9 @@ class UserService extends React.Component {
       if (response.data.message) {
         return response;
       } else {
-        localStorage.setItem('token', 'null');
-        localStorage.setItem('user', 'null');
+        localStorage.setItem('userToken', null);
+        localStorage.setItem('username', null);
+        localStorage.setItem('userId', null);
         console.log(localStorage.getItem('token'));
         console.log('local storage user', localStorage.getItem('user'));
         return response;

@@ -12,24 +12,32 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(
-    localStorage.getItem('token') !== 'null'
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    // localStorage.getItem('userToken') !== 'null' &&
+    localStorage.getItem('userToken') !== null
   );
   const userService = useContext(UserContext);
 
   Axios.defaults.withCredentials = true;
 
   const handleLogin = async () => {
-    let response = await userService.login(username, password);
-    if (response.data.message) {
-      setError({
-        title: 'Invalid',
-        message: response.data.message,
+    let response = await userService
+      .login(username, password)
+      .then((response) => {
+        console.log('login.js response', response);
+        if (response === true) {
+          setIsLoggedIn(true);
+        } else if (response.data.message) {
+          setError({
+            title: 'Invalid',
+            message: response.data.message,
+          });
+        }
       });
-    }
+
     // console.log(user);
     console.log(userService.user);
-    setLoggedIn(true);
+    setIsLoggedIn(true);
     setUsername('');
     setPassword('');
   };
@@ -44,13 +52,14 @@ function Login() {
   const handleLogout = async () => {
     // await userService.logout();
     let response = await userService.logout();
+    console.log('logout', userService?.user);
     if (response.data.message) {
       setError({
         title: 'Invalid',
         message: response.data.message,
       });
     }
-    setLoggedIn(false);
+    setIsLoggedIn(false);
     setUsername('');
     setPassword('');
   };
@@ -67,11 +76,12 @@ function Login() {
           onConfirm={errorHandler}
         />
       )}
+
       <div className="text-center">
         <h2 className="login-register-header">Sign in</h2>
       </div>
       <div className="login-register-form">
-        {localStorage.getItem('token') === 'null' && (
+        {localStorage.getItem('userToken') === 'null' && (
           <div className="form-group row">
             <label className="col-sm-3 col-form-label">Username</label>
             <div className="col-sm-9">
@@ -85,7 +95,7 @@ function Login() {
             </div>
           </div>
         )}
-        {localStorage.getItem('token') === 'null' && (
+        {localStorage.getItem('userToken') === 'null' && (
           <div className="form-group row">
             <label className="col-sm-3 col-form-label">Password</label>
             <div className="col-sm-9">
@@ -100,21 +110,21 @@ function Login() {
           </div>
         )}
 
-        {localStorage.getItem('token') !== 'null' && (
+        {localStorage.getItem('userToken') !== 'null' && (
           <div>
-            <p> You are logged in {userService.user?.username}</p>
+            <p> You are logged in {localStorage.getItem('username')}</p>
             <button className="login-btn" onClick={handleLogout}>
               logout
             </button>
           </div>
         )}
-        {localStorage.getItem('token') === 'null' && (
+        {localStorage.getItem('userToken') === 'null' && (
           <button className="login-btn" onClick={handleLogin}>
             login
           </button>
         )}
       </div>
-      {localStorage.getItem('token') === 'null' && (
+      {localStorage.getItem('userToken') === 'null' && (
         <div>
           {!isRegistering && (
             <button className="login-btn" onClick={startRegistrationHandler}>

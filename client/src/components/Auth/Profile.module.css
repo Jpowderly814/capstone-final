@@ -14,7 +14,8 @@
 
 .outer {
   align-items: center;
-  min-width: 800px;
+  min-width: 1000px;
+  max-width: 1400px;
   min-height: 800px;
   padding: 5rem;
   background-color: white;
@@ -22,15 +23,11 @@
   border: 4px solid rgb(128, 128, 128);
 }
 
-h1 {
-  padding-top: 1.5rem;
-  align-items: center;
-}
-
 .users {
+  align-items: center;
   margin: 1rem;
   width: 90%;
-  max-width: rem;
+  max-width: 800px;
   height: 50%;
   font-family: 'Merriweather', serif;
   background-color: rgb(219, 219, 219);
@@ -64,6 +61,8 @@ h1 {
   background-color: rgb(90, 90, 153);
   margin-top: 5px;
   max-height: 50px;
+  min-width2: 20px;
+  max-width: 100px;
   margin-left: 10px;
   margin-right: 10px;
   border: none;

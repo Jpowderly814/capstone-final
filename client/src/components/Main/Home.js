@@ -1,16 +1,13 @@
-import React, { useContext } from 'react';
-import './Home.css';
+// import './Home.css';
 
-import Connect from './Connect';
-import Dashboard from '../Music/Dashboard';
-import { UserContext } from '../..';
+// import Dashboard from '../Music/Dashboard';
 
-const code = new URLSearchParams(window.location.search).get('code');
+// function Home() {
+//   return (
+//     <div>
+//       <Dashboard />
+//     </div>
+//   );
+// }
 
-function Home() {
-  const userService = useContext(UserContext);
-  console.log(userService.user?.username);
-  return code ? <Dashboard code={code} /> : <Connect />;
-}
-
-export default Home;
+// export default Home;
