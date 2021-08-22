@@ -22,21 +22,19 @@ const Register = (props) => {
         message: 'Please do not leave fields blank.',
       });
       return;
-    }
-
-    if (!validator.isEmail(emailReg)) {
+    } else if (!validator.isEmail(emailReg)) {
       setError({
         title: 'Invalid input',
         message: 'Please use a valid email address.',
       });
       return;
+    } else {
+      await userService.register(usernameReg, passwordReg, emailReg);
+
+      setEmailReg('');
+      setUsernameReg('');
+      setPasswordReg('');
     }
-
-    await userService.register(usernameReg, passwordReg, emailReg);
-
-    setEmailReg('');
-    setUsernameReg('');
-    setPasswordReg('');
   };
 
   const errorHandler = () => {

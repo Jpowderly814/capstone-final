@@ -1,4 +1,4 @@
-import UserService from './UserService';
+import UserService from '../UserService';
 // import MockAdapter from 'axios-mock-adapter';
 
 import axios from 'axios';

@@ -85,6 +85,10 @@ class SpotifyService extends React.Component {
   play(playlist) {
     this._playlist = playlist;
   }
+
+  clear() {
+    this._playlist = null;
+  }
 }
 
 export default SpotifyService;

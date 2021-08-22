@@ -76,9 +76,6 @@ function Nav() {
                 <h3>Home</h3>
               </div>
             </Link>
-            {/* <Link to="/login">login/logout</Link>
-            <Link to="/profile">profile</Link>
-            <Link to="/connect">connect</Link> */}
 
             <div className="account-button">
               <DropdownButton className="dropdown" title="account">

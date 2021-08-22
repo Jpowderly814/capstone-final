@@ -1,6 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-
-// import useAuth from './UseAuth';
 import Player from './Player';
 import { SpotifyContext } from '../..';
 import PlaylistSearchResult from './PlaylistSearchResult';
@@ -12,7 +10,6 @@ import RatePlaylist from './RatePlaylist';
 import Button from '../UI/Button';
 import axios from 'axios';
 import './Dashboard.css';
-import Connect from '../Main/Connect';
 import { Redirect } from 'react-router-dom';
 
 const spotifyApi = new SpotifyWebApi({
@@ -23,8 +20,6 @@ export default function Dashboard() {
   const spotifyService = useContext(SpotifyContext);
   console.log(spotifyService.playlist);
 
-  // const accessToken = useAuth(code);
-
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem('accessToken')
   );
@@ -32,14 +27,6 @@ export default function Dashboard() {
     localStorage.getItem('refreshToken')
   );
   const [expiresIn, setExpiresIn] = useState(localStorage.getItem('expiresIn'));
-
-  // const accessToken = localStorage.getItem('accessToken');
-  // const refreshToken = localStorage.getItem('refreshToken');
-  // // const refreshToken =
-  // //   'AQCtRHREjkFe82tzui_Xso7t9qmsP0XHnZxGipOWcfwjEnS925XnHP2rgZGu08PgfVrgVlNpMLZPTadQnUfXDwkinsumaKEYH_TQ_LccNaN9bWx4aCX0qHgrFHFzO8FTbS4';
-
-  // const expiresIn = localStorage.getItem('expiresIn');
-  // const spotifyService = useContext(SpotifyContext);
 
   axios.defaults.withCredentials = true;
 
@@ -69,6 +56,11 @@ export default function Dashboard() {
   );
 
   useEffect(() => {
+    if (!accessToken) return;
+    spotifyApi.setAccessToken(accessToken);
+  }, [accessToken]);
+
+  useEffect(() => {
     let now = new Date();
     console.log('now', now);
     let currentTime = now.getTime();
@@ -86,102 +78,34 @@ export default function Dashboard() {
     }
   }, [isConnected]);
 
-  // infinite loop
-  // console.log(playingPlaylist, 'playing playlist');
-  // useEffect(() => {
-  //   if (!playingPlaylist) return setPlayingPlaylist('');
-  //   if (!accessToken) return;
-  //   let cancel = false;
+  useEffect(() => {
+    if (!spotifyService.playlist) return;
+    if (!accessToken) return;
+    const playlistUri = spotifyService.playlist.uri.substring(17);
+    spotifyApi.getPlaylistTracks(playlistUri).then((res) => {
+      console.log(res.body);
 
-  //   const playlistUri = playingPlaylist.uri.substring(17);
-  //   spotifyApi.getPlaylistTracks(playlistUri).then((res) => {
-  //     if (cancel) return;
-  //     console.log(res.body);
+      setPlaylistTracks(
+        res.body.items.map((track) => {
+          const smallestAlbumImage = track.track.album.images.reduce(
+            (smallest, image) => {
+              if (image.height < smallest.height) return image;
+              return smallest;
+            }
+          );
 
-  //     setPlaylistTracks(
-  //       res.body.items.map((track) => {
-  //         const smallestAlbumImage = track.track.album.images.reduce(
-  //           (smallest, image) => {
-  //             if (image.height < smallest.height) return image;
-  //             return smallest;
-  //           }
-  //         );
-
-  //         return {
-  //           title: track.track.name,
-  //           albumUrl: smallestAlbumImage.url,
-  //           id: track.track.id,
-  //           uri: track.track.uri,
-  //         };
-  //       })
-  //     );
-  //     console.log('playlist tracks', playlistTracks);
-  //   });
-  //   // spotifyApi.searchPlaylists(spotifyService.playlist).then((res) => {
-  //   //   console.log(res.body);
-  //   // });
-  //   return () => {
-  //     cancel = true;
-  //   };
-  // }, [playingPlaylist, playlistTracks, accessToken]);
-
-  // useEffect(() => {
-  //   if (!refreshToken || !expiresIn) return;
-  //   const interval = setInterval(() => {
-  //     axios
-  //       .post('http://localhost:3001/refresh', {
-  //         refreshToken,
-  //       })
-  //       .then((res) => {
-  //         setAccessToken(res.data.accessToken);
-  //         setExpiresIn(res.data.expiresIn);
-  //       })
-  //       .catch(() => {
-  //         window.location = '/';
-  //       });
-  //   }, (expiresIn - 60) * 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [refreshToken, expiresIn]);
-
-  // useEffect(() => {
-  //   //localStorage.clear();
-  //   let code;
-  //   console.log('use effect inside dashboard');
-  //   if (accessToken === 'undefined' || accessToken === null) {
-  //     console.log('needs to connect');
-  //     let popup = window.open(
-  //       'https://accounts.spotify.com/authorize?client_id=5cd4002b7b2647d4837327d4413300db&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state',
-  //       'Login with spotify',
-  //       'width=800,height=600'
-  //     );
-  //     code = new URLSearchParams(window.location.search).get('code');
-  //     console.log('dashboard', code);
-  //     //popup.close();
-  //     console.log(code);
-  //     // if (!code) {
-  //     //   return <Connect />;
-  //     // }
-  //     if (code) {
-  //       spotifyService.connect(code);
-  //     }
-  //   }
-  // });
-  // useEffect(() => {
-  //   // if (!search) return setSearchResults([]);
-  //   if (!accessToken) {
-  //     let response = spotifyService.connect();
-  //     // if (response.data.message) {
-  //     //   console.log(response.data.message);
-  //     // }
-
-  //     if (response) {
-  //       console.log(response);
-  //     }
-  //   }
-
-  //   // console.log(user);
-  // });
+          return {
+            title: track.track.name,
+            albumUrl: smallestAlbumImage.url,
+            id: track.track.id,
+            uri: track.track.uri,
+          };
+        })
+      );
+    });
+    spotifyService.clear();
+    console.log(spotifyService.playlist);
+  }, [spotifyService, accessToken]);
 
   function choosePlaylist(playlist) {
     console.log(playlist);
@@ -242,11 +166,6 @@ export default function Dashboard() {
 
     return () => (cancel = true);
   }, [search, accessToken]);
-
-  useEffect(() => {
-    if (!accessToken) return;
-    spotifyApi.setAccessToken(accessToken);
-  }, [accessToken]);
 
   useEffect(() => {
     if (!search) return setSearchResults([]);

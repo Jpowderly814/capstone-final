@@ -89,6 +89,8 @@
 }
 
 .header h1 {
+  font-family: 'Didot', serif;
+
   position: relative;
   top: 18px;
   left: 10px;

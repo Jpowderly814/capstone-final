@@ -14,6 +14,7 @@ const TrackList = (props) => {
               className="track-list"
               style={{ cursor: 'pointer' }}
               type="submit"
+              data-testid="trackListButton"
               onClick={() => props.selectTrack(index, name.uri)}
             >
               <Card className="track-item">

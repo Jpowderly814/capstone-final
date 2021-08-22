@@ -5,7 +5,6 @@ import axios from 'axios';
 import { UserContext } from '../..';
 import { Redirect } from 'react-router-dom';
 import logo from './music-notes.png';
-import SpotifyService from '../../Services/SpotifyService';
 import { SpotifyContext } from '../..';
 
 const Profile = () => {
@@ -38,15 +37,14 @@ const Profile = () => {
     });
   };
 
-  const handlePlayFavorite = (id) => {
+  const handlePlayFavorite = (playlist) => {
     spotifyService.play({
-      title: '170 BPM cadence run',
-      uri: 'spotify:playlist:7piEfGgVIxFploRDjeS2Fa',
-      albumUrl:
-        'https://mosaic.scdn.co/60/ab67616d0000b2730376bdff…31170a418ab67616d0000b2739bbd79106e510d13a9a5ec33',
+      title: playlist.title,
+      uri: playlist.uri,
+      albumUrl: playlist.albumUrl,
     });
     setPlayFavorite(true);
-    setFavorite(id);
+    setFavorite(playlist);
     console.log(spotifyService._playlist);
   };
 
@@ -102,7 +100,11 @@ const Profile = () => {
                 <button
                   className={classes.button}
                   onClick={() => {
-                    handlePlayFavorite(favorite.playlist);
+                    handlePlayFavorite({
+                      title: favorite.name,
+                      uri: 'spotify:playlist:' + favorite.playlist,
+                      albumUrl: favorite.albumUrl,
+                    });
                   }}
                 >
                   Play
