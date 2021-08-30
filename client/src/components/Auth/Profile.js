@@ -5,6 +5,7 @@ import axios from 'axios';
 import { UserContext } from '../..';
 import { Redirect } from 'react-router-dom';
 import logo from './music-notes.png';
+import SpotifyService from '../../Services/SpotifyService';
 import { SpotifyContext } from '../..';
 
 const Profile = () => {

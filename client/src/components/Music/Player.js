@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import TrackList from './TrackList';
+import './Player.css';
 
 export default function Player({
   accessToken,
@@ -31,16 +32,18 @@ export default function Player({
 
   return (
     <div>
-      <SpotifyPlayer
-        token={accessToken}
-        callback={(state) => {
-          if (!state.isPlaying) setPlay(false);
-        }}
-        play={play}
-        uris={trackPlaying ? trackPlaying : []}
-        // uris={playlistUri ? newArray : []}
-        // uris={[newArray]}
-      />
+      <div className="spotify-player">
+        <SpotifyPlayer
+          token={accessToken}
+          callback={(state) => {
+            if (!state.isPlaying) setPlay(false);
+          }}
+          play={play}
+          uris={trackPlaying ? trackPlaying : []}
+          // uris={playlistUri ? newArray : []}
+          // uris={[newArray]}
+        />
+      </div>
       <TrackList trackList={trackList} selectTrack={selectTrack} />
     </div>
   );
