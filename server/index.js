@@ -66,27 +66,22 @@ app.post('/login/register', (req, res) => {
   });
 });
 
-const verifyJWT = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+// const verifyJWT = (req, res, next) => {
+//   const token = req.headers['x-access-token'];
 
-  if (!token) {
-    res.send('Need a token');
-  } else {
-    jwt.verify(token, 'jwtSecret', (err, decoded) => {
-      if (err) {
-        res.json({ auth: false, message: 'Failed to authenticate' });
-      } else {
-        req.userId = decoded.id;
-        next();
-      }
-    });
-  }
-};
-
-// app.get('/isUserAuth', verifyJWT, (req, res) => {
-//   console.log(res);
-//   res.send('You are authenticated');
-// });
+//   if (!token) {
+//     res.send('Need a token');
+//   } else {
+//     jwt.verify(token, 'jwtSecret', (err, decoded) => {
+//       if (err) {
+//         res.json({ auth: false, message: 'Failed to authenticate' });
+//       } else {
+//         req.userId = decoded.id;
+//         next();
+//       }
+//     });
+//   }
+// };
 
 app.get('/login', (req, res) => {
   if (req.session.user) {

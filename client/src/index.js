@@ -5,7 +5,6 @@ import reportWebVitals from './reportWebVitals';
 import SpotifyService from './Services/SpotifyService';
 import UserService from './Services/UserService';
 
-// user Service class
 const userService = new UserService();
 const spotifyService = new SpotifyService();
 const UserContext = React.createContext(null);
@@ -13,9 +12,6 @@ const SpotifyContext = React.createContext(null);
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* {localStorage.clear()} */}
-    {/* {console.log('index renderer')} */}
-
     <UserContext.Provider value={userService}>
       <SpotifyContext.Provider value={spotifyService}>
         <App />

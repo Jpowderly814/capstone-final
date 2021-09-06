@@ -5,16 +5,7 @@ import Button from '../UI/Button';
 //import StarRating from 'react-star-rating'
 
 const RatePlaylist = (props) => {
-  // const [isRating, setIsRating] = useState(false);
-  //const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
-
-  /* const startRatingHandler = () => {
-    setIsRating(true);
-  };
-  const stopRatingHandler = () => {
-    setIsRating(false);
-  }; */
 
   const onMouseEnter = (index) => {
     setHoverRating(index);
@@ -22,9 +13,6 @@ const RatePlaylist = (props) => {
   const onMouseLeave = () => {
     setHoverRating(0);
   };
-  /*const onSaveRating = (index) => {
-    setRating(index);
-  };*/
 
   function RatingIcon(props) {
     const {
@@ -104,7 +92,9 @@ const RatePlaylist = (props) => {
           />
         );
       })}
-      <Button onClick={props.onCancel}>cancel</Button>
+      <Button style={{ color: 'blue' }} onClick={props.onCancel}>
+        cancel
+      </Button>
     </div>
   );
 };

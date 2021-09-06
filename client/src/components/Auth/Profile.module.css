@@ -1,6 +1,8 @@
 .wrapper {
+  display: flex;
+  justify-content: center;
   align-items: center;
-  padding: 5rem;
+  padding: 2rem;
   background-image: linear-gradient(
     to bottom right,
     rgb(77, 109, 154, 0.2),
@@ -45,7 +47,7 @@
   font-size: 20px;
   font-size: 1.2rem;
   align-items: center;
-
+  border-radius: 5px;
   text-align: left;
   border: 1px rgb(219, 219, 219);
   background-color: rgba(255, 255, 255, 0.89);
@@ -101,7 +103,7 @@
   font-family: 'Didot', serif;
   font-weight: bold;
   padding-top: 50px;
-  padding-right: 50px;
+  padding-right: 100px;
   color: rgba(255, 255, 255, 0.89);
 
   /* position: relative;

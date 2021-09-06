@@ -46,15 +46,6 @@ export default function Dashboard() {
     setIsRating(false);
   };
 
-  console.log(
-    'access',
-    accessToken,
-    'refresh',
-    refreshToken,
-    'expiresIn',
-    expiresIn
-  );
-
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
@@ -62,15 +53,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     let now = new Date();
-    console.log('now', now);
     let currentTime = now.getTime();
-    console.log(currentTime);
-    console.log(typeof currentTime);
-    console.log(localStorage.getItem('expireTime'));
     let expireTime = parseInt(localStorage.getItem('expireTime'), 10);
-    console.log(typeof expireTime);
     if (currentTime < expireTime) {
-      console.log('current time is less than expireTime');
       console.log('time remaining: ', expireTime - currentTime);
       setIsConnected(true);
     } else {
@@ -195,13 +180,10 @@ export default function Dashboard() {
         })
       );
     });
-
     return () => (cancel = true);
   }, [search, accessToken]);
 
   const savePlaylist = () => {
-    console.log(localStorage.getItem('userId'));
-
     console.log(playingPlaylist);
     axios
       .post('http://localhost:3001/save', {
@@ -221,32 +203,33 @@ export default function Dashboard() {
       <div className="title-bar">
         <h2>Search Playlists</h2>
         {/* Move this into another componenent */}
-
-        <Form.Control
-          as="select"
-          type="search"
-          placeholder="Search Playlists"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        >
-          <option value="">Select a tempo</option>
-          <option value="180">180 BPM</option>
-          <option value="170">170 BPM</option>
-          <option value="160">160 BPM</option>
-          <option value="150">150 BPM</option>
-        </Form.Control>
-        <p>OR</p>
-        <Form.Control
-          as="select"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        >
-          <option value="">Select a workout</option>
-          <option value="run">Running</option>
-          <option value="lift">Weight-lifting</option>
-          <option value="cycling">Biking</option>
-          <option value="yoga">Yoga</option>
-        </Form.Control>
+        <Container className="d-flex flex-row py-2" style={{ width: '75vh' }}>
+          <Form.Control
+            as="select"
+            type="search"
+            placeholder="Search Playlists"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          >
+            <option value="">Select a tempo</option>
+            <option value="180">180 BPM</option>
+            <option value="170">170 BPM</option>
+            <option value="160">160 BPM</option>
+            <option value="150">150 BPM</option>
+          </Form.Control>
+          <p>OR</p>
+          <Form.Control
+            as="select"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          >
+            <option value="">Select a workout</option>
+            <option value="run">Running</option>
+            <option value="lift">Weight-lifting</option>
+            <option value="cycling">Biking</option>
+            <option value="yoga">Yoga</option>
+          </Form.Control>
+        </Container>
       </div>
 
       <div className="flex-grow-1 my-2">

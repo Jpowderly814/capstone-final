@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import './RatePlaylist.css';
 import axios from 'axios';
-import Data from './Data';
+
 //import StarRating from 'react-star-rating'
 
 const AverageRating = (props) => {

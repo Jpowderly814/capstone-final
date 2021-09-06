@@ -13,7 +13,6 @@ function Login() {
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(
-    // localStorage.getItem('userToken') !== 'null' &&
     localStorage.getItem('userToken') !== null
   );
   const userService = useContext(UserContext);
@@ -21,19 +20,17 @@ function Login() {
   Axios.defaults.withCredentials = true;
 
   const handleLogin = async () => {
-    let response = await userService
-      .login(username, password)
-      .then((response) => {
-        console.log('login.js response', response);
-        if (response === true) {
-          setIsLoggedIn(true);
-        } else if (response.data.message) {
-          setError({
-            title: 'Invalid',
-            message: response.data.message,
-          });
-        }
-      });
+    await userService.login(username, password).then((response) => {
+      console.log('login.js response', response);
+      if (response === true) {
+        setIsLoggedIn(true);
+      } else if (response.data.message) {
+        setError({
+          title: 'Invalid',
+          message: response.data.message,
+        });
+      }
+    });
 
     // console.log(user);
     console.log(userService.user);

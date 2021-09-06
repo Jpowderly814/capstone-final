@@ -1,10 +1,18 @@
 .title-bar {
-  margin-top: 60px;
+  margin-top: 35px;
   font-family: 'Didot', serif;
 }
 
-.h2 {
+.title-bar h2 {
   font-size: 3rem;
+}
+
+.title-bar p {
+  font-size: 1rem;
+  margin: 1rem;
+  /* margin-top: 0.75rem;
+  margin-right: 1rem;
+  margin-left: 1rem; */
 }
 
 .playlist-header {

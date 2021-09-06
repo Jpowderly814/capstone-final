@@ -4,15 +4,11 @@ import React from 'react';
 import User from '../Domain/Entities/Types/User';
 
 class UserService extends React.Component {
-  _user = null; // potato - i could not get this to set values in login with the private setting - how to fix this?
+  _user = null;
 
   get user() {
     return this._user;
   }
-
-  // get user() {
-  //   return this.user;
-  // }
 
   async register(usernameReg, passwordReg, emailReg) {
     return Axios.post('http://localhost:3001/login/register', {
@@ -35,12 +31,10 @@ class UserService extends React.Component {
         console.log('login response', response.data.result[0]);
         this._user = new User(response.data.result[0].username);
         console.log(this._user);
-        // console.log(this.person);
         localStorage.setItem('userToken', response.data.token);
         localStorage.setItem('username', response.data.result[0].username);
         localStorage.setItem('expiresIn', response.data.token.expires);
         localStorage.setItem('userId', response.data.result[0].id);
-        // console.log(localStorage.getItem('token'));
         console.log(localStorage.getItem('username'));
         return response;
       }
@@ -55,8 +49,7 @@ class UserService extends React.Component {
         localStorage.setItem('userToken', null);
         localStorage.setItem('username', null);
         localStorage.setItem('userId', null);
-        console.log(localStorage.getItem('token'));
-        console.log('local storage user', localStorage.getItem('user'));
+        console.log(localStorage.getItem('userToken'));
         return response;
       }
     });
