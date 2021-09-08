@@ -66,27 +66,22 @@ app.post('/login/register', (req, res) => {
   });
 });
 
-const verifyJWT = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+// const verifyJWT = (req, res, next) => {
+//   const token = req.headers['x-access-token'];
 
-  if (!token) {
-    res.send('Need a token');
-  } else {
-    jwt.verify(token, 'jwtSecret', (err, decoded) => {
-      if (err) {
-        res.json({ auth: false, message: 'Failed to authenticate' });
-      } else {
-        req.userId = decoded.id;
-        next();
-      }
-    });
-  }
-};
-
-app.get('/isUserAuth', verifyJWT, (req, res) => {
-  console.log(res);
-  res.send('You are authenticated');
-});
+//   if (!token) {
+//     res.send('Need a token');
+//   } else {
+//     jwt.verify(token, 'jwtSecret', (err, decoded) => {
+//       if (err) {
+//         res.json({ auth: false, message: 'Failed to authenticate' });
+//       } else {
+//         req.userId = decoded.id;
+//         next();
+//       }
+//     });
+//   }
+// };
 
 app.get('/login', (req, res) => {
   if (req.session.user) {
@@ -147,6 +142,7 @@ app.get('/logout', (req, res) => {
 
 app.post('/logout', (req, res) => {
   const token = null;
+  console.log('ogout');
   res.json({ auth: false, token: token, result: null });
 });
 
@@ -157,21 +153,22 @@ app.listen(3001, () => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/music/refresh', (req, res) => {
+app.post('/refresh', (req, res) => {
   const refreshToken = req.body.refreshToken;
+  console.log('refresh server', refreshToken);
   const spotifyApi = new SpotifyWebApi({
     redirectUri: process.env.REDIRECT_URI,
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     refreshToken,
   });
-
+  console.log('You are here');
   spotifyApi
     .refreshAccessToken()
     .then((data) => {
       res.json({
-        accessToken: data.body.accessToken,
-        expiresIn: data.body.expiresIn,
+        accessToken: data.body.access_token,
+        expiresIn: data.body.expires_in,
       });
     })
     .catch((err) => {
@@ -182,12 +179,13 @@ app.post('/music/refresh', (req, res) => {
 
 app.post('/connect', (req, res) => {
   const code = req.body.code;
+  console.log('spotify server', code);
   const spotifyApi = new SpotifyWebApi({
-    redirectUri: 'http://localhost:3000',
-    clientId: '5cd4002b7b2647d4837327d4413300db',
-    clientSecret: '9b6fd50cb1e74819a99666a4c2f0c88f',
+    redirectUri: process.env.REDIRECT_URI,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
   });
-
+  console.log('you are here');
   spotifyApi
     .authorizationCodeGrant(code)
     .then((data) => {
@@ -198,6 +196,7 @@ app.post('/connect', (req, res) => {
       });
     })
     .catch(() => {
+      console.log(res);
       res.sendStatus(400);
     });
 });
@@ -206,10 +205,11 @@ app.post('/save', (req, res) => {
   const playlist = req.body.playlist;
   const name = req.body.name;
   const user = req.body.user;
+  const albumUrl = req.body.albumUrl;
 
   db.query(
-    'INSERT INTO favorites (playlist, name, user) VALUES (?,?,?)',
-    [playlist, name, user],
+    'INSERT INTO favorites (playlist, name, user, albumUrl) VALUES (?,?,?,?)',
+    [playlist, name, user, albumUrl],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -258,7 +258,7 @@ app.post('/rate', (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(result);
+        // console.log(result);
       }
     }
   );
