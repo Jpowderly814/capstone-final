@@ -200,7 +200,7 @@ export default function Dashboard() {
   return (
     <Container>
       {!isConnected && <Redirect to="/connect" />}
-      <div className="title-bar">
+      <div className="title-bar" data-testid="dashboardHeader">
         <h2>Search Playlists</h2>
         {/* Move this into another componenent */}
         <Container className="d-flex flex-row py-2" style={{ width: '75vh' }}>

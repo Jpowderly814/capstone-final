@@ -6,16 +6,11 @@ import {
   Redirect,
 } from 'react-router-dom';
 import Login from '../Auth/Login';
-import Home from './Home';
 import Profile from '../Auth/Profile';
 import Connect from '../Main/Connect';
-import ErrorModal from '../UI/ErrorModal';
 import Dashboard from '../Music/Dashboard';
 import './Nav.css';
-
 import { DropdownButton, Dropdown } from 'react-bootstrap';
-import { isSemicolonClassElement } from 'typescript';
-import SpotifyService from '../../Services/SpotifyService';
 import { SpotifyContext } from '../..';
 
 function Nav() {

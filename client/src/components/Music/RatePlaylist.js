@@ -80,7 +80,7 @@ const RatePlaylist = (props) => {
   };
 
   return (
-    <div className="box flex">
+    <div className="box flex" data-testid="rateButton">
       {[1, 2, 3, 4, 5].map((index) => {
         return (
           <RatingIcon
